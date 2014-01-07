@@ -2,6 +2,22 @@
 
 class SiteController extends Controller
 {
+        public $layout='//layouts/column2';
+    
+	public function accessRules()
+	{
+            
+            $test = 10;
+            
+		return array(
+			array('deny',  // deny all users
+                                'actions'=>array('contact'),
+				'users'=>array('*'),
+			),
+		);
+	}
+
+    
 	/**
 	 * Declares class-based actions.
 	 */
@@ -51,6 +67,7 @@ class SiteController extends Controller
 	 */
 	public function actionContact()
 	{
+            /*
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))
 		{
@@ -70,6 +87,9 @@ class SiteController extends Controller
 			}
 		}
 		$this->render('contact',array('model'=>$model));
+             * */
+            
+             $this->render('index');
 	}
 
 	/**

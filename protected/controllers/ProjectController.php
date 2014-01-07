@@ -1,6 +1,6 @@
 <?php
 
-class ArticleController extends Controller
+class ProjectController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -26,8 +26,6 @@ class ArticleController extends Controller
 	 */
 	public function accessRules()
 	{
-            
-            
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
@@ -38,11 +36,10 @@ class ArticleController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin', 'delete'),
+				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
-                                //'actions'=>array('delete'),
 				'users'=>array('*'),
 			),
 		);
@@ -65,14 +62,14 @@ class ArticleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Article;
+		$model=new Project;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['Project']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['Project'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -94,9 +91,9 @@ class ArticleController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Article']))
+		if(isset($_POST['Project']))
 		{
-			$model->attributes=$_POST['Article'];
+			$model->attributes=$_POST['Project'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
@@ -125,44 +122,10 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-            
-            $user = User::model()->findByPk(Yii::app()->user->id);
-            
-            
-            if(!$user->superuser){
-                
-                $criteria=new CDbCriteria(array(
-                    'condition'=>'user_id='.Yii::app()->user->id,
-                    'order'=>'time_created DESC',
-                ));
-  
-
-                $dataProvider=new CActiveDataProvider('Article', array(
-                    'pagination'=>array(
-                        'pageSize'=>5,
-                    ),
-                    'criteria'=>$criteria,
-                ));           
-            }
-            else{
-                //So is the super user, show all articles
-                $criteria=new CDbCriteria(array(
-                    'order'=>'time_created DESC',
-                ));
-                
-                $dataProvider=new CActiveDataProvider('Article', array(
-                    'pagination'=>array(
-                        'pageSize'=>5,
-                    ),
-                    'criteria'=>$criteria,
-                ));   
-            }
-                
-
-            $this->render('index',array(
-                'dataProvider'=>$dataProvider,
-            ));
-    
+		$dataProvider=new CActiveDataProvider('Project');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
 	}
 
 	/**
@@ -170,10 +133,10 @@ class ArticleController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Article('search');
+		$model=new Project('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Article']))
-			$model->attributes=$_GET['Article'];
+		if(isset($_GET['Project']))
+			$model->attributes=$_GET['Project'];
 
 		$this->render('admin',array(
 			'model'=>$model,
@@ -184,12 +147,12 @@ class ArticleController extends Controller
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer $id the ID of the model to be loaded
-	 * @return Article the loaded model
+	 * @return Project the loaded model
 	 * @throws CHttpException
 	 */
 	public function loadModel($id)
 	{
-		$model=Article::model()->findByPk($id);
+		$model=Project::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -197,11 +160,11 @@ class ArticleController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param Article $model the model to be validated
+	 * @param Project $model the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='article-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='project-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
