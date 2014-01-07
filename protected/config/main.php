@@ -18,8 +18,6 @@ return array(
             'application.components.*',
             'application.modules.user.models.*',
             'application.modules.user.components.*',
-            'application.modules.rights.*',
-            'application.modules.rights.components.*',
         ),
 
 	'modules'=>array(

@@ -36,10 +36,11 @@ class ArticleController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin', 'delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
+                                //'actions'=>array('delete'),
 				'users'=>array('*'),
 			),
 		);
@@ -122,17 +123,39 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
+            
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            
+            
+            if(!$user->superuser){
                 
-            $criteria=new CDbCriteria(array(
-                'condition'=>'user_id='.Yii::app()->user->id
-            ));
+                $criteria=new CDbCriteria(array(
+                    'condition'=>'user_id='.Yii::app()->user->id,
+                    'order'=>'time_created DESC',
+                ));
+  
 
-            $dataProvider=new CActiveDataProvider('Article', array(
-                'pagination'=>array(
-                    'pageSize'=>5,
-                ),
-                'criteria'=>$criteria,
-            ));
+                $dataProvider=new CActiveDataProvider('Article', array(
+                    'pagination'=>array(
+                        'pageSize'=>5,
+                    ),
+                    'criteria'=>$criteria,
+                ));           
+            }
+            else{
+                //So is the super user, show all articles
+                $criteria=new CDbCriteria(array(
+                    'order'=>'time_created DESC',
+                ));
+                
+                $dataProvider=new CActiveDataProvider('Article', array(
+                    'pagination'=>array(
+                        'pageSize'=>5,
+                    ),
+                    'criteria'=>$criteria,
+                ));   
+            }
+                
 
             $this->render('index',array(
                 'dataProvider'=>$dataProvider,

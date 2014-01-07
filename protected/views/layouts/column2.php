@@ -7,7 +7,10 @@
 </div>
 <div class="span-5 last">
 	<div id="sidebar">
-	<?php
+            
+        <?php if(!Yii::app()->user->isGuest) $this->widget('UserMenu'); 
+        
+        
 		$this->beginWidget('zii.widgets.CPortlet', array(
 			'title'=>'Operations',
 		));

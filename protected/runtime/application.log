@@ -260,3 +260,269 @@ Stack trace:
 REQUEST_URI=/push_articles/testdrive/index.php?r=article/admin
 HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article/index
 ---
+2014/01/07 13:49:59 [error] [exception.CException] exception 'CException' with message 'Application web user must extend the RWebUser class.' in /var/www/push_articles/testdrive/protected/modules/rights/components/RInstaller.php:63
+Stack trace:
+#0 /var/www/push_articles/yii/framework/base/CModule.php(387): RInstaller->init()
+#1 /var/www/push_articles/testdrive/protected/modules/rights/RightsModule.php(200): CModule->getComponent('installer')
+#2 /var/www/push_articles/testdrive/protected/modules/rights/controllers/InstallController.php(29): RightsModule->getInstaller()
+#3 /var/www/push_articles/yii/framework/web/CWebApplication.php(281): InstallController->init()
+#4 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('rights')
+#5 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#6 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#7 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=rights
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=user/profile
+---
+2014/01/07 13:59:39 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'There must be at least one superuser!' in /var/www/push_articles/testdrive/protected/modules/rights/components/RAuthorizer.php:305
+Stack trace:
+#0 /var/www/push_articles/testdrive/protected/modules/rights/controllers/InstallController.php(61): RAuthorizer->getSuperusers()
+#1 /var/www/push_articles/yii/framework/web/CController.php(1144): InstallController->accessRules()
+#2 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#5 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#6 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('')
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('rights')
+#8 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#9 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#10 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=rights
+---
+2014/01/07 14:00:03 [error] [exception.CException] exception 'CException' with message 'RWebUser and its behaviors do not have a method or closure named "updateSession".' in /var/www/push_articles/yii/framework/base/CComponent.php:266
+Stack trace:
+#0 /var/www/push_articles/testdrive/protected/modules/user/models/User.php(202): CComponent->__call('updateSession', Array)
+#1 /var/www/push_articles/testdrive/protected/modules/user/models/User.php(202): RWebUser->updateSession()
+#2 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1126): User->afterSave()
+#3 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->update(NULL)
+#4 /var/www/push_articles/testdrive/protected/modules/user/controllers/LoginController.php(36): CActiveRecord->save()
+#5 /var/www/push_articles/testdrive/protected/modules/user/controllers/LoginController.php(20): LoginController->lastViset()
+#6 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): LoginController->actionLogin()
+#7 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /var/www/push_articles/yii/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#9 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#10 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('')
+#11 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('user/login')
+#12 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#13 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#14 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=user/login
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=user/login
+---
+2014/01/07 14:05:06 [error] [system.db.CDbCommand] Error in preparing SQL: UPDATE {{users}} SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch')
+2014/01/07 14:05:06 [error] [system.db.CDbCommand] CDbCommand::execute() failed: CDbCommand failed to prepare the SQL statement: SQLSTATE[HY000]: General error: 1 unrecognized token: "{". The SQL statement executed was: UPDATE {{users}} SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch').
+2014/01/07 14:09:25 [error] [system.db.CDbCommand] Error in preparing SQL: UPDATE {{users}} SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch')
+2014/01/07 14:09:25 [error] [system.db.CDbCommand] CDbCommand::execute() failed: CDbCommand failed to prepare the SQL statement: SQLSTATE[HY000]: General error: 1 unrecognized token: "{". The SQL statement executed was: UPDATE {{users}} SET create_at = datetime(createtime, 'unixepoch'), lastvisit_at = datetime(lastvisit, 'unixepoch').
+2014/01/07 14:11:34 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'push_articles.tbl_migration' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `tbl_migration`.
+2014/01/07 14:11:37 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'tbl_users' already exists. The SQL statement executed was: CREATE TABLE `tbl_users` (
+	`id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	`username` varchar(20) NOT NULL DEFAULT '',
+	`password` varchar(128) NOT NULL DEFAULT '',
+	`email` varchar(128) NOT NULL DEFAULT '',
+	`activkey` varchar(128) NOT NULL DEFAULT '',
+	`createtime` int(10) NOT NULL DEFAULT 0,
+	`lastvisit` int(10) NOT NULL DEFAULT 0,
+	`superuser` int(1) NOT NULL DEFAULT 0,
+	`status` int(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB CHARSET=utf8.
+2014/01/07 14:12:36 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'push_articles.tbl_migration' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `tbl_migration`.
+2014/01/07 14:28:32 [error] [exception.CException] exception 'CException' with message 'Property "User.AdminStatus" is not defined.' in /var/www/push_articles/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(145): CComponent->__get('AdminStatus')
+#1 /var/www/push_articles/testdrive/protected/controllers/ArticleController.php(128): CActiveRecord->__get('AdminStatus')
+#2 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ArticleController->actionIndex()
+#3 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#5 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#7 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#8 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#9 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#10 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('')
+#12 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article')
+#13 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#14 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article
+---
+2014/01/07 14:31:49 [error] [exception.CException] exception 'CException' with message 'The "dataProvider" property cannot be empty.' in /var/www/push_articles/yii/framework/zii/widgets/CBaseListView.php:109
+Stack trace:
+#0 /var/www/push_articles/yii/framework/zii/widgets/CListView.php(211): CBaseListView->init()
+#1 /var/www/push_articles/yii/framework/web/CBaseController.php(147): CListView->init()
+#2 /var/www/push_articles/yii/framework/web/CBaseController.php(172): CBaseController->createWidget('zii.widgets.CLi...', Array)
+#3 /var/www/push_articles/testdrive/protected/views/article/index.php(20): CBaseController->widget('zii.widgets.CLi...', Array)
+#4 /var/www/push_articles/yii/framework/web/CBaseController.php(126): require('/var/www/push_a...')
+#5 /var/www/push_articles/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/var/www/push_a...', Array, true)
+#6 /var/www/push_articles/yii/framework/web/CController.php(869): CBaseController->renderFile('/var/www/push_a...', Array, true)
+#7 /var/www/push_articles/yii/framework/web/CController.php(782): CController->renderPartial('index', Array, true)
+#8 /var/www/push_articles/testdrive/protected/controllers/ArticleController.php(146): CController->render('index', Array)
+#9 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ArticleController->actionIndex()
+#10 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#11 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#12 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#13 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#14 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#15 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#16 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#17 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('')
+#19 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article')
+#20 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#21 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#22 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article
+---
+2014/01/07 14:33:52 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/admin')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article/admin
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article
+---
+2014/01/07 14:55:31 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/admin')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article/admin
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article
+---
+2014/01/07 14:55:43 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/admin')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article/admin
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article
+---
+2014/01/07 15:31:09 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/admin')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=article/admin
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article/index
+---
+2014/01/07 15:32:01 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('delete')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/delete')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?ajax=article-grid&id=5&r=article%2Fdelete
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article/admin
+---
+2014/01/07 15:32:20 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('delete')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/delete')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?ajax=article-grid&id=5&r=article%2Fdelete
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article/admin
+---
+2014/01/07 15:32:30 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('delete')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/delete')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?ajax=article-grid&id=5&r=article%2Fdelete
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=article/admin
+---
+2014/01/07 15:43:24 [error] [php] include(Comment.php) [<a href='function.include'>function.include</a>]: failed to open stream: No such file or directory (/var/www/push_articles/yii/framework/YiiBase.php:427)
+Stack trace:
+#0 /var/www/push_articles/testdrive/protected/components/views/userMenu.php(6): spl_autoload_call()
+#1 /var/www/push_articles/yii/framework/web/CBaseController.php(130): require()
+#2 /var/www/push_articles/yii/framework/web/CBaseController.php(95): UserMenu->renderInternal()
+#3 /var/www/push_articles/yii/framework/web/widgets/CWidget.php(244): UserMenu->renderFile()
+#4 /var/www/push_articles/testdrive/protected/components/UserMenu.php(15): UserMenu->render()
+#5 /var/www/push_articles/yii/framework/zii/widgets/CPortlet.php(97): UserMenu->renderContent()
+#6 /var/www/push_articles/yii/framework/web/CBaseController.php(173): UserMenu->run()
+#7 /var/www/push_articles/testdrive/protected/views/layouts/column2.php(11): ProfileController->widget()
+#8 /var/www/push_articles/yii/framework/web/CBaseController.php(126): require()
+#9 /var/www/push_articles/yii/framework/web/CBaseController.php(95): ProfileController->renderInternal()
+#10 /var/www/push_articles/yii/framework/web/CController.php(784): ProfileController->renderFile()
+#11 /var/www/push_articles/testdrive/protected/modules/user/controllers/ProfileController.php(21): ProfileController->render()
+#12 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ProfileController->actionProfile()
+#13 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams()
+#14 /var/www/push_articles/yii/framework/web/CController.php(286): ProfileController->runAction()
+#15 /var/www/push_articles/yii/framework/web/CController.php(265): ProfileController->runActionWithFilters()
+#16 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): ProfileController->run()
+#17 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#18 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#19 /var/www/push_articles/testdrive/index.php(13): CWebApplication->run()
+REQUEST_URI=/push_articles/testdrive/index.php?r=user/profile
+in /var/www/push_articles/testdrive/protected/components/views/userMenu.php (6)
+in /var/www/push_articles/testdrive/protected/components/UserMenu.php (15)
+in /var/www/push_articles/testdrive/protected/views/layouts/column2.php (11)
+2014/01/07 15:44:11 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/article/create".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('user/article/cr...')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php?r=user/article/create
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php?r=user/profile
+---
