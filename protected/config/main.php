@@ -80,6 +80,8 @@ return array(
                     'rules'=>array(
                         'article/<id:\d+>/<title:.*?>'=>'article/view',
                         'articles'=>'article/index',
+                        'project/<id:\d+>/<title:.*?>'=>'project/view',
+                        'projects'=>'project/index',
                         '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                     ),
                 ),

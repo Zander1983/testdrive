@@ -127,8 +127,7 @@ class ArticleController extends Controller
 	{
             
             $user = User::model()->findByPk(Yii::app()->user->id);
-            
-            
+                   
             if(!$user->superuser){
                 
                 $criteria=new CDbCriteria(array(

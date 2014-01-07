@@ -690,3 +690,29 @@ HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/user/profile
 ---
 2014/01/07 16:43:28 [error] [system.db.CDbCommand] CDbCommand::fetchAll() failed: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'push_articles.tbl_project' doesn't exist. The SQL statement executed was: SHOW FULL COLUMNS FROM `tbl_project`.
 in /var/www/push_articles/testdrive/index.php (13)
+2014/01/07 16:49:32 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "user/site/logout".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('user/site/logou...')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/user/site/logout
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/user/admin
+---
+2014/01/07 16:57:50 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "projects".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('projects')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/projects
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/user/profile
+---
+2014/01/07 16:57:57 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "projects/index".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('projects/index')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/projects/index
+---
