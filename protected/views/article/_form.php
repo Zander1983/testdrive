@@ -20,9 +20,9 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'user_id'); ?>
-		<?php echo $form->textField($model,'user_id'); ?>
-		<?php echo $form->error($model,'user_id'); ?>
+		<?php echo $form->labelEx($model,'title'); ?>
+		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>80)); ?>
+		<?php echo $form->error($model,'title'); ?>
 	</div>
 
 	<div class="row">
@@ -31,23 +31,7 @@
 		<?php echo $form->error($model,'article_url'); ?>
 	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'pushed'); ?>
-		<?php echo $form->textField($model,'pushed'); ?>
-		<?php echo $form->error($model,'pushed'); ?>
-	</div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'number_pushed_to'); ?>
-		<?php echo $form->textField($model,'number_pushed_to'); ?>
-		<?php echo $form->error($model,'number_pushed_to'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'time_created'); ?>
-		<?php echo $form->textField($model,'time_created'); ?>
-		<?php echo $form->error($model,'time_created'); ?>
-	</div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

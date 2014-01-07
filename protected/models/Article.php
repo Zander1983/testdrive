@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $user_id
  * @property string $article_url
+ * @property string $title
  * @property integer $pushed
  * @property integer $number_pushed_to
  * @property string $time_created
@@ -29,6 +30,8 @@ class Article extends CActiveRecord
                  'title'=>$this->title,
              ));
          }
+         
+         
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -38,12 +41,13 @@ class Article extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('article_url', 'required'),
+			array('article_url, title', 'required'),
 			array('user_id, pushed, number_pushed_to', 'numerical', 'integerOnly'=>true),
 			array('article_url', 'length', 'max'=>150),
+                        array('title', 'length', 'max'=>80),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, user_id, article_url, pushed, number_pushed_to, time_created', 'safe', 'on'=>'search'),
+			array('article_url, title', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +72,7 @@ class Article extends CActiveRecord
 			'id' => 'ID',
 			'user_id' => 'User',
 			'article_url' => 'Article Url',
+                        'title' => 'Title',
 			'pushed' => 'Pushed',
 			'number_pushed_to' => 'Number Pushed To',
 			'time_created' => 'Time Created',
@@ -92,12 +97,8 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('user_id',$this->user_id);
+		$criteria->compare('title',$this->title,true);
 		$criteria->compare('article_url',$this->article_url,true);
-		$criteria->compare('pushed',$this->pushed);
-		$criteria->compare('number_pushed_to',$this->number_pushed_to);
-		$criteria->compare('time_created',$this->time_created,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,4 +115,57 @@ class Article extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+
+        protected function beforeSave()
+        {
+            $test = 10;
+            
+            if(parent::beforeSave())
+            {
+                var_dump('before save ');
+                var_dump(time());
+                
+                
+                
+                $this->time_created=time();
+                $this->user_id=Yii::app()->user->id;
+   
+                return true;
+            }
+            else
+                return false;
+        }
+        
+        /*
+         * This is where we will make the curl call
+         */
+        
+        protected function afterSave()
+        {
+            
+            
+            $user = User::model()->findByPk(Yii::app()->user->id);
+
+            $data = array('title' => $this->title, 'project_title' => $user->username);
+                
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, "http://localhost/schoolspace/device_api/notify");
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            
+            //add headers to pass authorization
+            curl_setopt($ch,CURLOPT_HTTPHEADER,array('device_id: 63843', 'api_key: hv7Vgd4jsbb'));
+            
+            file_put_contents('/var/www/my_logs/beforeCurl.log', "just before curl");
+            
+            $result = curl_exec($ch);
+
+            file_put_contents('/var/www/my_logs/result.log', "$result");
+
+            print_r($result);
+            curl_close($ch);
+            
+        }
+ 
 }

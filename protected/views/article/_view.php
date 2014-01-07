@@ -13,6 +13,10 @@
 	<?php echo CHtml::encode($data->user_id); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('title')); ?>:</b>
+	<?php echo CHtml::encode($data->title); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('article_url')); ?>:</b>
 	<?php echo CHtml::encode($data->article_url); ?>
 	<br />

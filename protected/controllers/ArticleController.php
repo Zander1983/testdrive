@@ -122,10 +122,22 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Article');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+                
+            $criteria=new CDbCriteria(array(
+                'condition'=>'user_id='.Yii::app()->user->id
+            ));
+
+            $dataProvider=new CActiveDataProvider('Article', array(
+                'pagination'=>array(
+                    'pageSize'=>5,
+                ),
+                'criteria'=>$criteria,
+            ));
+
+            $this->render('index',array(
+                'dataProvider'=>$dataProvider,
+            ));
+    
 	}
 
 	/**

@@ -13,10 +13,14 @@ return array(
 	'preload'=>array('log'),
 
 	// autoloading model and component classes
-	'import'=>array(
-		'application.models.*',
-		'application.components.*',
-	),
+        'import'=>array(
+            'application.models.*',
+            'application.components.*',
+            'application.modules.user.models.*',
+            'application.modules.user.components.*',
+            'application.modules.rights.*',
+            'application.modules.rights.components.*',
+        ),
 
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
@@ -27,7 +31,42 @@ return array(
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 		),
-		
+            
+                'user'=>array(
+                         # encrypting method (php hash function)
+                         'hash' => 'md5',
+
+                         # send activation email
+                         'sendActivationMail' => true,
+
+                         # allow access for non-activated users
+                         'loginNotActiv' => false,
+
+                         # activate user on registration (only sendActivationMail = false)
+                         'activeAfterRegister' => false,
+
+                         # automatically login from registration
+                         'autoLogin' => true,
+
+                         # registration path
+                         'registrationUrl' => array('/user/registration'),
+
+                         # recovery password path
+                         'recoveryUrl' => array('/user/recovery'),
+
+                         # login form path
+                         'loginUrl' => array('/user/login'),
+
+                         # page after login
+                         'returnUrl' => array('/user/profile'),
+
+                         # page after logout
+                         'returnLogoutUrl' => array('/user/login'),
+                     ),
+            
+                    'rights'=>array(
+                            'install'=>true,
+                    ),
 	),
 
 	// application components
@@ -83,6 +122,18 @@ return array(
 				*/
 			),
 		),
+            
+                'user'=>array(
+                    // enable cookie-based authentication
+                    'class' => 'WebUser',
+                    'allowAutoLogin'=>true,
+                    'loginUrl' => array('/user/login'),
+                ),
+                'authManager'=>array(
+                        'class'=>'RDbAuthManager',
+                        'connectionID'=>'db',
+                        'defaultRoles'=>array('Authenticated', 'Guest'),
+                ),
 	),
 
 	// application-level parameters that can be accessed
