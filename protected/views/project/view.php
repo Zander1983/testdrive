@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Projects'=>array('index'),
-	$model->title,
+	$model->project_title,
 );
 
 $this->menu=array(
@@ -22,7 +22,7 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'title',
+		'project_title',
 		'project_number',
 		'api_key',
 	),

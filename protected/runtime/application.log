@@ -934,3 +934,62 @@ Stack trace:
 REQUEST_URI=/push_articles/testdrive/index.php/project/create
 in /var/www/push_articles/testdrive/protected/controllers/ProjectController.php (73)
 in /var/www/push_articles/testdrive/index.php (13)
+2014/01/08 11:41:42 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "users".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('users')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/users
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/user/admin/create
+---
+2014/01/08 12:00:36 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "devices".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('devices')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/devices
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/
+---
+2014/01/08 12:13:51 [error] [php] Invalid argument supplied for foreach() (/var/www/push_articles/yii/framework/db/schema/CDbCriteria.php:159)
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CActiveDataProvider.php(96): CActiveDataProvider->__set()
+#1 /var/www/push_articles/testdrive/protected/controllers/DeviceController.php(31): CActiveDataProvider->__construct()
+#2 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): DeviceController->actionIndex()
+#3 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams()
+#4 /var/www/push_articles/yii/framework/web/CController.php(286): DeviceController->runAction()
+#5 /var/www/push_articles/yii/framework/web/CController.php(265): DeviceController->runActionWithFilters()
+#6 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): DeviceController->run()
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#8 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#9 /var/www/push_articles/testdrive/index.php(13): CWebApplication->run()
+REQUEST_URI=/push_articles/testdrive/index.php/device/index
+in /var/www/push_articles/testdrive/protected/controllers/DeviceController.php (31)
+in /var/www/push_articles/testdrive/index.php (13)
+2014/01/08 12:18:05 [error] [exception.CHttpException.404] exception 'CHttpException' with message 'Unable to resolve the request "devices".' in /var/www/push_articles/yii/framework/web/CWebApplication.php:286
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('devices')
+#1 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#2 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#3 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/devices
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/user/admin/view/id/4
+---
+2014/01/08 12:43:27 [error] [exception.CHttpException.403] exception 'CHttpException' with message 'You are not authorized to perform this action.' in /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php:182
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CAccessControlFilter.php(145): CAccessControlFilter->accessDenied(Object(WebUser), 'You are not aut...')
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(38): CAccessControlFilter->preFilter(Object(CFilterChain))
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('admin')
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/admin')
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#11 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/article/admin
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/article/create
+---

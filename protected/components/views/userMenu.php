@@ -2,16 +2,20 @@
 <ul>
     <li><?php echo CHtml::link('Push New Article',Yii::app()->createAbsoluteUrl('article/create')); ?></li>
     
-    <li><?php  echo CHtml::link('Your Articles', Yii::app()->createAbsoluteUrl('articles')); ?></li>
+    <li><?php  echo CHtml::link('Your Articles Pushed', Yii::app()->createAbsoluteUrl('articles')); ?></li>
+    
+    <li><?php  echo CHtml::link('Devices', Yii::app()->createAbsoluteUrl('devices')); ?></li>
    
-    <?php
-            $user = User::model()->findByPk(Yii::app()->user->id);    
-            if($user->superuser){
+    <?php 
+            if(Yii::app()->user->isAdmin()){
              ?>
-    <li><?php  echo CHtml::link('New Project', Yii::app()->createAbsoluteUrl('project/create')); ?></li>
-      
     <li><?php  echo CHtml::link('Projects', Yii::app()->createAbsoluteUrl('projects')); ?></li>
     
+    <li><?php  echo CHtml::link('New Project', Yii::app()->createAbsoluteUrl('project/create')); ?></li>
+    
+    <li><?php  echo CHtml::link('Users', Yii::app()->createAbsoluteUrl('user')); ?></li>
+    
+    <li><?php  echo CHtml::link('New User', Yii::app()->createAbsoluteUrl('user/admin/create')); ?></li>
     
     <?php
             }

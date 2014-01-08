@@ -144,7 +144,7 @@ class Article extends CActiveRecord
         protected function afterSave()
         {
             
-            
+            /*
             $user = User::model()->findByPk(Yii::app()->user->id);
 
             $data = array('title' => $this->title, 'project_title' => $user->username);
@@ -164,7 +164,15 @@ class Article extends CActiveRecord
             file_put_contents('/var/www/my_logs/result.log', "$result");
 
             print_r($result);
-            curl_close($ch);
+            curl_close($ch);*/
+            
+            $user = User::model()->findByPk(Yii::app()->user->id);
+            //'project_title' => $user->username
+            $project = Project::model()->find(array('condition' => "title = '{$user->username}'"));
+            
+            $devices = Device::model()->find(array('condition' => "title = '{$user->username}'"));
+            
+            file_put_contents('/var/www/my_logs/project.log', $project->project_number);
             
         }
  

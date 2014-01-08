@@ -1,25 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{project}}".
+ * This is the model class for table "{{device}}".
  *
- * The followings are the available columns in table '{{project}}':
+ * The followings are the available columns in table '{{device}}':
  * @property integer $id
+ * @property string $platform
+ * @property string $reg_id
  * @property string $project_title
- * @property string $project_number
  * @property string $api_key
+ * @property string $notification_on
  */
-
-
-
-class Project extends CActiveRecord
+class Device extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{project}}';
+		return '{{device}}';
 	}
 
 	/**
@@ -27,28 +26,17 @@ class Project extends CActiveRecord
 	 */
 	public function rules()
 	{
-            
-                Yii::import("application.modules.user.UserModule", true); 
-                
-                
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('project_title, project_number, api_key', 'required'),
+			array('platform, reg_id, project_title, api_key, notification_on', 'required'),
+			array('platform', 'length', 'max'=>12),
+			array('reg_id', 'length', 'max'=>200),
 			array('project_title', 'length', 'max'=>30),
-			array('project_number', 'length', 'max'=>50),
-			array('api_key', 'length', 'max'=>100),
-                        array('project_title', 'unique', 'message' => UserModule::t("This project title already exists.")),
-                        array('project_number', 'unique', 'message' => UserModule::t("This project number already exists.")),
-                        array('api_key', 'unique', 'message' => UserModule::t("This api key number already exists.")),
-                        array('project_title', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
-                        array('api_key', 'match', 'pattern' => '/^\S{6,}\z/', 'message' => UserModule::t("Incorrect symbols, no spaces allowed.")),
-                        //array('project_number', 'match', 'pattern' => '/[^0-9]/', 'message' => UserModule::t("Must be numbers only.")),
-                        array('project_number', 'numerical', 'integerOnly'=>true, 'min'=>0),
-                        // 
+			array('api_key', 'length', 'max'=>8),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			//array('id, project_title, project_number, api_key', 'safe', 'on'=>'search'),
+			//array('id, platform, reg_id, project_title, api_key, notification_on', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,9 +58,11 @@ class Project extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'platform' => 'Platform',
+			'reg_id' => 'Reg',
 			'project_title' => 'Project Title',
-			'project_number' => 'Project Number',
 			'api_key' => 'Api Key',
+			'notification_on' => 'Notification On Since',
 		);
 	}
 
@@ -95,9 +85,11 @@ class Project extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('platform',$this->platform,true);
+		$criteria->compare('reg_id',$this->reg_id,true);
 		$criteria->compare('project_title',$this->project_title,true);
-		$criteria->compare('project_number',$this->project_number,true);
 		$criteria->compare('api_key',$this->api_key,true);
+		$criteria->compare('notification_on',$this->notification_on,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -108,7 +100,7 @@ class Project extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Project the static model class
+	 * @return Device the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

@@ -82,6 +82,7 @@ return array(
                         'articles'=>'article/index',
                         'project/<id:\d+>/<title:.*?>'=>'project/view',
                         'projects'=>'project/index',
+                        'devices'=>'device/index',
                         '<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
                     ),
                 ),

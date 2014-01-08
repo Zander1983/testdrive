@@ -125,10 +125,9 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-            
-            $user = User::model()->findByPk(Yii::app()->user->id);
+           
                    
-            if(!$user->superuser){
+            if(!Yii::app()->user->isAdmin()){
                 
                 $criteria=new CDbCriteria(array(
                     'condition'=>'user_id='.Yii::app()->user->id,
