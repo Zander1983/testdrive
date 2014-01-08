@@ -144,28 +144,6 @@ class Article extends CActiveRecord
         protected function afterSave()
         {
             
-            /*
-            $user = User::model()->findByPk(Yii::app()->user->id);
-
-            $data = array('title' => $this->title, 'project_title' => $user->username);
-                
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, "http://localhost/schoolspace/device_api/notify");
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            
-            //add headers to pass authorization
-            curl_setopt($ch,CURLOPT_HTTPHEADER,array('device_id: 63843', 'api_key: hv7Vgd4jsbb'));
-            
-            file_put_contents('/var/www/my_logs/beforeCurl.log', "just before curl");
-            
-            $result = curl_exec($ch);
-
-            file_put_contents('/var/www/my_logs/result.log', "$result");
-
-            print_r($result);
-            curl_close($ch);*/
-            
             $user = User::model()->findByPk(Yii::app()->user->id);
             //'project_title' => $user->username
             $project = Project::model()->find(array('condition' => "project_title = '{$user->username}'"));
@@ -177,8 +155,12 @@ class Article extends CActiveRecord
                 $registrationId[] = $device->reg_id;
             }
     
+            $message      = "the test message";
+            $tickerText   = "ticker text message";
+            $contentTitle = "content title";
+            $contentText  = "content body";
 
-            $response = sendNotification( 
+            $response = $this->sendNotification( 
                             $project->api_key, 
                             $registrationId, 
                             array(
@@ -189,48 +171,41 @@ class Article extends CActiveRecord
 
             $response = json_decode($response);
 
-
-            if($response->success==1){
-                //record success
-                $message = "The article with title $message and id of {$article->id}
-                            from the website {$article->project_title}
-                            has been successfully pushed
-                            ";
-                recordPushSuccess($message);
-
-                //add the article
-                if(!addArticle($article, $project->id)){
-                    $message = "Could not add the article with title $message 
-                            and id of {$article->id}
-                            from the website {$article->project_title} to article table ";
-                    recordPushFailure($message);
-                }
-            }
-            else{
-                $message = "An error  title $message and id of {$article->id}
-                            from the website {$article->project_title}
-                            could not be pushed
-                            ";
-                recordPushFailure($message);
+            if($response->success>0){
+                //it's been pushed so set pushed to 1 (its automatically 0)
+                $pushed = 1;
             }
             
-            file_put_contents('/var/www/my_logs/project.log', $project->project_number);
+            
+            $this->updateByPk($this->id, array(
+                'pushed' => $pushed
+            ));
             
         }
         
-        private function recordPushFailure($message){
 
-                //send an email notifying of failure     
-                mail('markkelly1983@yahoo.co.uk', 'A problem occurred pushing article', $message);
-                //file_put_contents('/var/www/my_logs/failure.log', $message);
-        }
+        private function sendNotification( $apiKey, $registrationIdsArray, $messageData )
+        {   
 
-        private function recordPushSuccess($message){
+            $headers = array("Content-Type:" . "application/json", "Authorization:" . "key=" . $apiKey);
+            $data = array(
+                'data' => $messageData,
+                'registration_ids' => $registrationIdsArray
+            );
 
-                $articleDevice = new ArticleDevice();
-                $articleDevice->article_id = 8;
-                $articleDevice->article_title = "blah";
-                $articleDevice->save();
+            $ch = curl_init();
+
+            curl_setopt( $ch, CURLOPT_HTTPHEADER, $headers ); 
+            curl_setopt( $ch, CURLOPT_URL, "https://android.googleapis.com/gcm/send" );
+            curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
+            curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
+            curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+            curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode($data) );
+
+            $response = curl_exec($ch);
+            curl_close($ch);
+
+            return $response;
         }
  
 }

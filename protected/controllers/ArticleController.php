@@ -72,6 +72,8 @@ class ArticleController extends Controller
 
 		if(isset($_POST['Article']))
 		{
+                    file_put_contents('/var/www/my_logs/model.log', var_export($_POST['Article'], true));
+                    
 			$model->attributes=$_POST['Article'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
@@ -125,11 +127,6 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-            $test = 10;
-                $articleDevice = ArticleDevice::model();
-                $articleDevice->article_id = 8;
-                $articleDevice->article_title = "blah";
-                $articleDevice->save();
            
                    
             if(!Yii::app()->user->isAdmin()){

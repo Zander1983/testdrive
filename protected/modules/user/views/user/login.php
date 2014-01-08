@@ -34,11 +34,6 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::activePasswordField($model,'password') ?>
 	</div>
 	
-	<div class="row">
-		<p class="hint">
-		<?php echo CHtml::link(UserModule::t("Register"),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?>
-		</p>
-	</div>
 	
 	<div class="row rememberMe">
 		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>

@@ -993,3 +993,120 @@ Stack trace:
 REQUEST_URI=/push_articles/testdrive/index.php/article/admin
 HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/article/create
 ---
+2014/01/08 14:54:37 [error] [php] Attempt to assign property of non-object (/var/www/push_articles/testdrive/protected/controllers/ArticleController.php:138)
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): ArticleController->runAction()
+#1 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#2 /var/www/push_articles/yii/framework/web/CController.php(1145): CAccessControlFilter->filter()
+#3 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): ArticleController->filterAccessControl()
+#4 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter()
+#5 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/push_articles/yii/framework/web/CController.php(265): ArticleController->runActionWithFilters()
+#7 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): ArticleController->run()
+#8 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#9 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#10 /var/www/push_articles/testdrive/index.php(13): CWebApplication->run()
+REQUEST_URI=/push_articles/testdrive/index.php/articles
+in /var/www/push_articles/testdrive/protected/controllers/ArticleController.php (138)
+in /var/www/push_articles/testdrive/index.php (13)
+2014/01/08 15:06:17 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '17' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `tbl_article` (`title`, `article_url`, `time_created`, `user_id`, `id`, `pushed`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5).
+in /var/www/push_articles/testdrive/protected/models/Article.php (203)
+in /var/www/push_articles/testdrive/protected/controllers/ArticleController.php (78)
+in /var/www/push_articles/testdrive/index.php (13)
+2014/01/08 15:06:23 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '17' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `tbl_article` (`title`, `article_url`, `time_created`, `user_id`, `id`, `pushed`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5)' in /var/www/push_articles/yii/framework/db/CDbCommand.php:358
+Stack trace:
+#0 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1077): CDbCommand->execute()
+#1 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 /var/www/push_articles/testdrive/protected/models/Article.php(203): CActiveRecord->save()
+#3 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1097): Article->afterSave()
+#4 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#5 /var/www/push_articles/testdrive/protected/controllers/ArticleController.php(78): CActiveRecord->save()
+#6 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ArticleController->actionCreate()
+#7 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#9 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#10 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#11 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#12 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#13 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#14 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#16 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/create')
+#17 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#18 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#19 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/article/create
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/article/create
+---
+2014/01/08 15:07:36 [error] [exception.CDbException] exception 'CDbException' with message 'The active record cannot be updated because it is new.' in /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php:1118
+Stack trace:
+#0 /var/www/push_articles/testdrive/protected/models/Article.php(203): CActiveRecord->update()
+#1 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1097): Article->afterSave()
+#2 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#3 /var/www/push_articles/testdrive/protected/controllers/ArticleController.php(78): CActiveRecord->save()
+#4 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ArticleController->actionCreate()
+#5 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#6 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#7 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#8 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#9 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#10 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#11 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#12 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#13 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#14 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/create')
+#15 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#16 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#17 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/article/create
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/article/create
+---
+2014/01/08 15:09:17 [error] [system.db.CDbCommand] CDbCommand::execute() failed: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '19' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `tbl_article` (`title`, `article_url`, `time_created`, `user_id`, `id`, `pushed`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5).
+in /var/www/push_articles/testdrive/protected/models/Article.php (203)
+in /var/www/push_articles/testdrive/protected/controllers/ArticleController.php (78)
+in /var/www/push_articles/testdrive/index.php (13)
+2014/01/08 15:09:17 [error] [exception.CDbException] exception 'CDbException' with message 'CDbCommand failed to execute the SQL statement: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry '19' for key 'PRIMARY'. The SQL statement executed was: INSERT INTO `tbl_article` (`title`, `article_url`, `time_created`, `user_id`, `id`, `pushed`) VALUES (:yp0, :yp1, :yp2, :yp3, :yp4, :yp5)' in /var/www/push_articles/yii/framework/db/CDbCommand.php:358
+Stack trace:
+#0 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1077): CDbCommand->execute()
+#1 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#2 /var/www/push_articles/testdrive/protected/models/Article.php(203): CActiveRecord->save(false)
+#3 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(1097): Article->afterSave()
+#4 /var/www/push_articles/yii/framework/db/ar/CActiveRecord.php(806): CActiveRecord->insert(NULL)
+#5 /var/www/push_articles/testdrive/protected/controllers/ArticleController.php(78): CActiveRecord->save()
+#6 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ArticleController->actionCreate()
+#7 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#8 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(133): CController->runAction(Object(CInlineAction))
+#9 /var/www/push_articles/yii/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#10 /var/www/push_articles/yii/framework/web/CController.php(1145): CFilter->filter(Object(CFilterChain))
+#11 /var/www/push_articles/yii/framework/web/filters/CInlineFilter.php(58): CController->filterAccessControl(Object(CFilterChain))
+#12 /var/www/push_articles/yii/framework/web/filters/CFilterChain.php(130): CInlineFilter->filter(Object(CFilterChain))
+#13 /var/www/push_articles/yii/framework/web/CController.php(291): CFilterChain->run()
+#14 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#15 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('create')
+#16 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('article/create')
+#17 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#18 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#19 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/article/create
+HTTP_REFERER=http://localhost/push_articles/testdrive/index.php/article/create
+---
+2014/01/08 16:39:50 [error] [exception.CException] exception 'CException' with message 'Property "WebUser.isAdmin" is not defined.' in /var/www/push_articles/yii/framework/base/CComponent.php:130
+Stack trace:
+#0 /var/www/push_articles/yii/framework/web/auth/CWebUser.php(146): CComponent->__get('isAdmin')
+#1 /var/www/push_articles/testdrive/protected/modules/user/views/profile/profile.php(6): CWebUser->__get('isAdmin')
+#2 /var/www/push_articles/yii/framework/web/CBaseController.php(126): require('/var/www/push_a...')
+#3 /var/www/push_articles/yii/framework/web/CBaseController.php(95): CBaseController->renderInternal('/var/www/push_a...', Array, true)
+#4 /var/www/push_articles/yii/framework/web/CController.php(869): CBaseController->renderFile('/var/www/push_a...', Array, true)
+#5 /var/www/push_articles/yii/framework/web/CController.php(782): CController->renderPartial('profile', Array, true)
+#6 /var/www/push_articles/testdrive/protected/modules/user/controllers/ProfileController.php(21): CController->render('profile', Array)
+#7 /var/www/push_articles/yii/framework/web/actions/CInlineAction.php(49): ProfileController->actionProfile()
+#8 /var/www/push_articles/yii/framework/web/CController.php(308): CInlineAction->runWithParams(Array)
+#9 /var/www/push_articles/yii/framework/web/CController.php(286): CController->runAction(Object(CInlineAction))
+#10 /var/www/push_articles/yii/framework/web/CController.php(265): CController->runActionWithFilters(Object(CInlineAction), Array)
+#11 /var/www/push_articles/yii/framework/web/CWebApplication.php(282): CController->run('')
+#12 /var/www/push_articles/yii/framework/web/CWebApplication.php(141): CWebApplication->runController('user/profile')
+#13 /var/www/push_articles/yii/framework/base/CApplication.php(180): CWebApplication->processRequest()
+#14 /var/www/push_articles/testdrive/index.php(13): CApplication->run()
+#15 {main}
+REQUEST_URI=/push_articles/testdrive/index.php/user/profile
+---

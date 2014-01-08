@@ -102,4 +102,9 @@ class ArticleDevice extends CActiveRecord
 	{
 		return parent::model($className);
 	}
+        
+        /*
+         * Record failure to send push to a device
+         */
+
 }

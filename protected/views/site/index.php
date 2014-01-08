@@ -10,6 +10,9 @@ $this->pageTitle=Yii::app()->name;
 
 <p>The control panel allows school administrators to notify app users of a latest news article from the school.</p>
 
+<p>Use your the login details provided by Schoolspace to review articles you have pushed, push a new article, 
+and see how many mobile devices will receive your notifications. </p>
+
 <?php
     if(Yii::app()->user->isGuest){
 ?>
@@ -19,16 +22,18 @@ $this->pageTitle=Yii::app()->name;
     }
     else{
 ?>
-    <p>Click "Push New Article" in the right sidebar to notify app users of a new news story.</p>
+    <p>Click "Push New Article" in the right sidebar to review articles you have pushed, push a new article, 
+and see how many mobile devices will receive your notifications. </p>
     
 <?php
     }
 ?>
 
+    <!--
 <p>You may change the content of this page by modifying the following two files:</p>
 <ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
+	<li>View file: <code><?php //echo __FILE__; ?></code></li>
+	<li>Layout file: <code><?php //echo $this->getLayoutFile('main'); ?></code></li>
 </ul>
-
+-->
 
