@@ -125,6 +125,11 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
+            $test = 10;
+                $articleDevice = ArticleDevice::model();
+                $articleDevice->article_id = 8;
+                $articleDevice->article_title = "blah";
+                $articleDevice->save();
            
                    
             if(!Yii::app()->user->isAdmin()){

@@ -168,12 +168,69 @@ class Article extends CActiveRecord
             
             $user = User::model()->findByPk(Yii::app()->user->id);
             //'project_title' => $user->username
-            $project = Project::model()->find(array('condition' => "title = '{$user->username}'"));
+            $project = Project::model()->find(array('condition' => "project_title = '{$user->username}'"));
             
-            $devices = Device::model()->find(array('condition' => "title = '{$user->username}'"));
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'"));
+            
+            
+            foreach ($devices as $device){
+                $registrationId[] = $device->reg_id;
+            }
+    
+
+            $response = sendNotification( 
+                            $project->api_key, 
+                            $registrationId, 
+                            array(
+                                'message' => $message, 
+                                'tickerText' => $tickerText, 
+                                'contentTitle' => $contentTitle, 
+                                "contentText" => $contentText) );
+
+            $response = json_decode($response);
+
+
+            if($response->success==1){
+                //record success
+                $message = "The article with title $message and id of {$article->id}
+                            from the website {$article->project_title}
+                            has been successfully pushed
+                            ";
+                recordPushSuccess($message);
+
+                //add the article
+                if(!addArticle($article, $project->id)){
+                    $message = "Could not add the article with title $message 
+                            and id of {$article->id}
+                            from the website {$article->project_title} to article table ";
+                    recordPushFailure($message);
+                }
+            }
+            else{
+                $message = "An error  title $message and id of {$article->id}
+                            from the website {$article->project_title}
+                            could not be pushed
+                            ";
+                recordPushFailure($message);
+            }
             
             file_put_contents('/var/www/my_logs/project.log', $project->project_number);
             
+        }
+        
+        private function recordPushFailure($message){
+
+                //send an email notifying of failure     
+                mail('markkelly1983@yahoo.co.uk', 'A problem occurred pushing article', $message);
+                //file_put_contents('/var/www/my_logs/failure.log', $message);
+        }
+
+        private function recordPushSuccess($message){
+
+                $articleDevice = new ArticleDevice();
+                $articleDevice->article_id = 8;
+                $articleDevice->article_title = "blah";
+                $articleDevice->save();
         }
  
 }
