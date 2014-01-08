@@ -6,9 +6,12 @@
  * The followings are the available columns in table '{{project}}':
  * @property integer $id
  * @property string $title
- * @property string $tbl_project_number
+ * @property string $project_number
  * @property string $api_key
  */
+
+
+
 class Project extends CActiveRecord
 {
 	/**
@@ -24,16 +27,28 @@ class Project extends CActiveRecord
 	 */
 	public function rules()
 	{
+            
+                Yii::import("application.modules.user.UserModule", true); 
+                
+                
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, tbl_project_number, api_key', 'required'),
+			array('title, project_number, api_key', 'required'),
 			array('title', 'length', 'max'=>30),
-			array('tbl_project_number', 'length', 'max'=>50),
+			array('project_number', 'length', 'max'=>50),
 			array('api_key', 'length', 'max'=>100),
+                        array('title', 'unique', 'message' => UserModule::t("This title already exists.")),
+                        array('project_number', 'unique', 'message' => UserModule::t("This project number already exists.")),
+                        array('api_key', 'unique', 'message' => UserModule::t("This api key number already exists.")),
+                        array('title', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
+                        array('api_key', 'match', 'pattern' => '/^\S{6,}\z/', 'message' => UserModule::t("Incorrect symbols, no spaces allowed.")),
+                        //array('project_number', 'match', 'pattern' => '/[^0-9]/', 'message' => UserModule::t("Must be numbers only.")),
+                        array('project_number', 'numerical', 'integerOnly'=>true, 'min'=>0),
+                        // 
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, title, tbl_project_number, api_key', 'safe', 'on'=>'search'),
+			//array('id, title, project_number, api_key', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -56,7 +71,7 @@ class Project extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'title' => 'Title',
-			'tbl_project_number' => 'Tbl Project Number',
+			'project_number' => 'Project Number',
 			'api_key' => 'Api Key',
 		);
 	}
@@ -81,7 +96,7 @@ class Project extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('title',$this->title,true);
-		$criteria->compare('tbl_project_number',$this->tbl_project_number,true);
+		$criteria->compare('project_number',$this->project_number,true);
 		$criteria->compare('api_key',$this->api_key,true);
 
 		return new CActiveDataProvider($this, array(

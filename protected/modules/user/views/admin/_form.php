@@ -12,9 +12,23 @@
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'username'); ?>
+		<?php 
+                
+                /*
+                echo $form->labelEx($model,'username'); 
+		//echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); 
+         
+                echo $form->dropDownList($model,'username', 
+                                                    CHtml::listData(Project::model()->findAll(
+                                                        array("condition"=>"title Not In (Select username from {{users}})")), 
+                                                        'title', 'title'), array('empty'=>'select Project'));
+		echo $form->error($model,'username'); */
+                
+		 echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'username'); ?>
+                
+                ?>
 	</div>
 
 	<div class="row">

@@ -13,8 +13,8 @@
 	<?php echo CHtml::encode($data->title); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('tbl_project_number')); ?>:</b>
-	<?php echo CHtml::encode($data->tbl_project_number); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('project_number')); ?>:</b>
+	<?php echo CHtml::encode($data->project_number); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('api_key')); ?>:</b>

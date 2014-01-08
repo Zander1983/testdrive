@@ -12,6 +12,7 @@
       
     <li><?php  echo CHtml::link('Projects', Yii::app()->createAbsoluteUrl('projects')); ?></li>
     
+    
     <?php
             }
     ?>

@@ -23,7 +23,7 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'title',
-		'tbl_project_number',
+		'project_number',
 		'api_key',
 	),
 )); ?>

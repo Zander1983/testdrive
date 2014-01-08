@@ -26,9 +26,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'tbl_project_number'); ?>
-		<?php echo $form->textField($model,'tbl_project_number',array('size'=>50,'maxlength'=>50)); ?>
-		<?php echo $form->error($model,'tbl_project_number'); ?>
+		<?php echo $form->labelEx($model,'project_number'); ?>
+		<?php echo $form->textField($model,'project_number',array('size'=>50,'maxlength'=>50)); ?>
+		<?php echo $form->error($model,'project_number'); ?>
 	</div>
 
 	<div class="row">
