@@ -5,6 +5,9 @@
 
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
+
+
+
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Schoolspace Push Notification Control Panel',
@@ -93,8 +96,25 @@ return array(
 			'connectionString' => 'sqlite:'.dirname(__FILE__).'/../data/testdrive.db',
 		),*/
             
-		// uncomment the following to use a MySQL database
+            
+                //BLACKNIGHT DETAILS
+                /*
+                 *          $dbhost="mysql2017int.cp.blacknight.com";
+                            $dbuser="u1295854_school";
+                            $dbpass="nm9*;CB0Ro";
+                            $dbname="db1295854_device_details";
+                 */
+            /*
+		'db'=>array(
+			'connectionString' => 'mysql:host=mysql2017int.cp.blacknight.com;dbname=db1295854_device_details',
+			'emulatePrepare' => true,
+			'username' => 'u1295854_school',
+			'password' => 'nm9*;CB0Ro',
+			'charset' => 'utf8',
+                        'tablePrefix' => 'tbl_',
+		),*/
 		
+                //LOCAL DETAILS
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=schoolspace_push',
 			'emulatePrepare' => true,

@@ -20,8 +20,8 @@
          
                 echo $form->dropDownList($model,'username', 
                                                     CHtml::listData(Project::model()->findAll(
-                                                        array("condition"=>"title Not In (Select username from {{users}})")), 
-                                                        'title', 'title'), array('empty'=>'Select Project'));
+                                                        array("condition"=>"project_title Not In (Select username from {{users}})")), 
+                                                        'project_title', 'project_title'), array('empty'=>'Select Project'));
 		echo $form->error($model,'username'); 
                 
                 /*

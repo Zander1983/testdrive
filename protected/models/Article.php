@@ -32,6 +32,14 @@ class Article extends CActiveRecord
          }
          
          
+        protected function afterFind()
+        {
+            
+            $this->time_created = date('Y-m-d H:i:s', $this->time_created);
+            
+            parent::afterFind();
+        }
+    
 
 	/**
 	 * @return array validation rules for model attributes.
@@ -123,11 +131,6 @@ class Article extends CActiveRecord
             
             if(parent::beforeSave())
             {
-                var_dump('before save ');
-                var_dump(time());
-                
-                
-                
                 $this->time_created=time();
                 $this->user_id=Yii::app()->user->id;
    
@@ -155,7 +158,7 @@ class Article extends CActiveRecord
                 $registrationId[] = $device->reg_id;
             }
     
-            $message      = "the test message";
+            $message      = $this->title;
             $tickerText   = "ticker text message";
             $contentTitle = "content title";
             $contentText  = "content body";
@@ -176,9 +179,11 @@ class Article extends CActiveRecord
                 $pushed = 1;
             }
             
+            mail('info@webintelligence.ie', 'response', var_export($response, true));
             
             $this->updateByPk($this->id, array(
-                'pushed' => $pushed
+                'pushed' => $pushed,
+                'number_pushed_to' => $response->success
             ));
             
         }
@@ -188,6 +193,7 @@ class Article extends CActiveRecord
         {   
 
             $headers = array("Content-Type:" . "application/json", "Authorization:" . "key=" . $apiKey);
+
             $data = array(
                 'data' => $messageData,
                 'registration_ids' => $registrationIdsArray

@@ -18,6 +18,9 @@ class ArticleController extends Controller
 			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
+        
+        
+
 
 	/**
 	 * Specifies the access control rules.
@@ -72,7 +75,6 @@ class ArticleController extends Controller
 
 		if(isset($_POST['Article']))
 		{
-                    file_put_contents('/var/www/my_logs/model.log', var_export($_POST['Article'], true));
                     
 			$model->attributes=$_POST['Article'];
 			if($model->save())
