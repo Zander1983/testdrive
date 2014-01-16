@@ -6,7 +6,7 @@
  * The followings are the available columns in table '{{article}}':
  * @property integer $id
  * @property integer $user_id
- * @property string $article_url
+ * @property string $content
  * @property string $title
  * @property integer $pushed
  * @property integer $number_pushed_to
@@ -49,13 +49,13 @@ class Article extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('article_url, title', 'required'),
+			array('content, title', 'required'),
 			array('user_id, pushed, number_pushed_to', 'numerical', 'integerOnly'=>true),
-			array('article_url', 'length', 'max'=>150),
+			array('content', 'length', 'max'=>2000),
                         array('title', 'length', 'max'=>80),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('article_url, title', 'safe', 'on'=>'search'),
+			array('content, title', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,7 +79,7 @@ class Article extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'user_id' => 'User',
-			'article_url' => 'Article Url',
+			'content' => 'Content',
                         'title' => 'Title',
 			'pushed' => 'Pushed',
 			'number_pushed_to' => 'Number Pushed To',
@@ -106,7 +106,7 @@ class Article extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('title',$this->title,true);
-		$criteria->compare('article_url',$this->article_url,true);
+		$criteria->compare('content',$this->content,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -178,8 +178,9 @@ class Article extends CActiveRecord
                             $registrationId, 
                             array(
                                 'title' => $this->title,
-                                'message' => $this->article_url, 
-                                'msgcnt' => '3'));
+                                'message' => substr($this->content, 0, 22)."..", 
+                                'article_id' => $this->id
+                                    ));
 
             $response = json_decode($response);
 

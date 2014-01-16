@@ -26,9 +26,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'article_url'); ?>
-		<?php echo $form->textField($model,'article_url',array('size'=>60,'maxlength'=>150)); ?>
-		<?php echo $form->error($model,'article_url'); ?>
+		<?php echo $form->labelEx($model,'content'); ?>
+		<?php echo $form->textArea($model,'content',array('maxlength'=>2000)); ?>
+		<?php echo $form->error($model,'content'); ?>
 	</div>
 
 

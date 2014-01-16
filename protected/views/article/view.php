@@ -25,7 +25,7 @@ $this->menu=array(
 		'id',
 		'user_id',
 		'title',
-		'article_url',
+		'content',
 		'pushed',
 		'number_pushed_to',
 		'time_created',

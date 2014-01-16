@@ -27,8 +27,8 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->label($model,'article_url'); ?>
-		<?php echo $form->textField($model,'article_url',array('size'=>60,'maxlength'=>150)); ?>
+		<?php echo $form->label($model,'content'); ?>
+		<?php echo $form->textField($model,'content',array('size'=>60,'maxlength'=>150)); ?>
 	</div>
 
 	<div class="row">

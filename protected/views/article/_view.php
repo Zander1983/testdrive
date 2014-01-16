@@ -17,8 +17,8 @@
 	<?php echo CHtml::encode($data->title); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('article_url')); ?>:</b>
-	<?php echo CHtml::encode($data->article_url); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('content')); ?>:</b>
+	<?php echo CHtml::encode($data->content); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('pushed')); ?>:</b>
