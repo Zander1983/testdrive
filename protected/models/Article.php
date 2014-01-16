@@ -183,13 +183,13 @@ class Article extends CActiveRecord
                                     ));
 
             $response = json_decode($response);
-
+            
+       
             if($response->success>0){
                 //it's been pushed so set pushed to 1 (its automatically 0)
                 $pushed = 1;
             }
             
-            mail('info@webintelligence.ie', 'response', var_export($response, true));
             
             $this->updateByPk($this->id, array(
                 'pushed' => $pushed,
