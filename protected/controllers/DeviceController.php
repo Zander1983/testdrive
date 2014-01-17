@@ -16,9 +16,13 @@ class DeviceController extends Controller
                 $criteria=new CDbCriteria(array(
                     'condition'=>"project_title = '{$user->username}'",
                 ));
-                    
-                $count = Device::model()->count(array(
+                   
+                $total = Device::model()->count(array(
                     'condition'=>"project_title = '{$user->username}'",
+                ));
+                    
+                $notifcation_on = Device::model()->count(array(
+                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
                 ));
   
                 $dataProvider=new CActiveDataProvider('Device', array(
@@ -30,8 +34,11 @@ class DeviceController extends Controller
             }
             else{
                 //So is the super user, show all articles
+                $total = Device::model()->count();
                 
-                $count = Device::model()->count();
+                $notifcation_on = Device::model()->count(array(
+                    'condition'=>"notification = 1",
+                ));
                 
                 $dataProvider=new CActiveDataProvider('Device', array(
                     'pagination'=>array(
@@ -44,7 +51,8 @@ class DeviceController extends Controller
             //$dataProvider=new CActiveDataProvider('Device');
             $this->render('index',array(
                     'dataProvider'=>$dataProvider,
-                    'count' => $count
+                    'total' => $total,
+                    'notifcation_on' => $notifcation_on
             ));
 	}
 

@@ -6,15 +6,18 @@ $this->breadcrumbs=array(
 );
 
 ?>
-<h3><?php 
+<?php 
 
     if(Yii::app()->user->isAdmin()){
-        echo "Total number of devices in all projects with notification turned on: ";
+        echo "<h3>Total number of users of Schoolspace apps: $total </h3>";
+        echo "<h3>Total number of devices in all projects with notification turned on: $notifcation_on </h3>";
     }
     else{
-        echo "Number of devices with notification turned on: ";
+        echo "<h3>Total number of users to have used the app: $total </h3>";
+        echo "<h3>Number of devices with notification turned on: $notifcation_on </h3>";
+        
     }
-    echo $count; 
+
     ?>
 </h3>
 

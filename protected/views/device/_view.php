@@ -18,5 +18,8 @@
 	<?php echo CHtml::encode($data->notification_on); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('notification')); ?>:</b>
+        <?php if($data->notification){echo "yes";}else{echo "no";} ?>
+	<br />
 
 </div>

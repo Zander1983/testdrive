@@ -10,6 +10,7 @@
  * @property string $project_title
  * @property string $api_key
  * @property string $notification_on
+ * @property string $notification
  */
 class Device extends CActiveRecord
 {
@@ -63,6 +64,7 @@ class Device extends CActiveRecord
 			'project_title' => 'Project Title',
 			'api_key' => 'Api Key',
 			'notification_on' => 'Notification On Since',
+                        'notification_on' => 'Notify User',
 		);
 	}
 
