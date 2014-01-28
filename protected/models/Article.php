@@ -8,8 +8,8 @@
  * @property integer $user_id
  * @property string $content
  * @property string $title
- * @property integer $pushed
- * @property integer $number_pushed_to
+ * @property string $apple_response
+ * @property integer $android_response
  * @property string $time_created
  */
 class Article extends CActiveRecord
@@ -50,8 +50,10 @@ class Article extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('content, title', 'required'),
-			array('user_id, pushed, number_pushed_to', 'numerical', 'integerOnly'=>true),
+			array('user_id', 'numerical', 'integerOnly'=>true),
 			array('content', 'length', 'max'=>2000),
+                        array('apple_response', 'length', 'max'=>200),
+                        array('android_response', 'length', 'max'=>200),
                         array('title', 'length', 'max'=>80),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
@@ -81,8 +83,8 @@ class Article extends CActiveRecord
 			'user_id' => 'User',
 			'content' => 'Content',
                         'title' => 'Title',
-			'pushed' => 'Pushed',
-			'number_pushed_to' => 'Number Pushed To',
+			'apple_response' => 'Apple Response',
+			'android_response' => 'Android Response',
 			'time_created' => 'Time Created',
 		);
 	}
@@ -147,35 +149,45 @@ class Article extends CActiveRecord
         protected function afterSave()
         {
             
+            mail('info@webintelligence.ie', 'in afterSave', 'bosy');
+            
             $user = User::model()->findByPk(Yii::app()->user->id);
+            
             //'project_title' => $user->username
             $project = Project::model()->find(array('condition' => "project_title = '{$user->username}'"));
             
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'"));
+            //get android devices
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+                                                        AND (platform = 'android' Or platform = 'Android')
+                                                        "));
+            $this->setupAndroidNotification($devices, $project);
+             
             
+            mail('info@webintelligence.ie', 'gettiing ios devices', 'bosy');
+            //get apple devices
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+                                                        AND (platform = 'ios' Or platform = 'iOS')
+                                                        "));
+            $this->setupAppleNotification($devices);
+           
+        }
+        
+        private function getRegIdsArray($devices){
             
             foreach ($devices as $device){
                 $registrationId[] = $device->reg_id;
             }
-    
-            $message      = $this->title;
-            $tickerText   = "ticker text message";
-            $contentTitle = "content title";
-            $contentText  = "content body";
-            
-            /*
-            message.addData('message',"\u270C Peace, Love \u2764 and PhoneGap \u2706!");
-            message.addData('title','Push Notification Sample' );
-            message.addData('msgcnt','3'); // Shows up in the notification in the status bar
-            message.addData('soundname','beep.wav'); //Sound to play upon notification receipt - put in the www folder in app
-            //message.collapseKey = 'demo';
-            //message.delayWhileIdle = true; //Default is false
-            message.timeToLive = 3000;// Duration in seconds to hold in GCM and retry before timing out. Default 4 weeks (2,419,200 seconds) if not specified.
-            */
+            return $registrationId;
+        }
+        
+        private function setupAndroidNotification( $devices, $project )
+        {
 
-            $response = $this->sendNotification( 
+            $registrationIds = $this->getRegIdsArray($devices);
+
+            $response = $this->sendAndroidNotification( 
                             $project->api_key, 
-                            $registrationId, 
+                            $registrationIds, 
                             array(
                                 'title' => $this->title,
                                 'message' => substr($this->content, 0, 22)."..", 
@@ -183,23 +195,19 @@ class Article extends CActiveRecord
                                     ));
 
             $response = json_decode($response);
-            
-       
-            if($response->success>0){
-                //it's been pushed so set pushed to 1 (its automatically 0)
-                $pushed = 1;
-            }
-            
-            
+
+            //record android response here
+
+            /*
             $this->updateByPk($this->id, array(
                 'pushed' => $pushed,
-                'number_pushed_to' => $response->success
-            ));
+                'android_response' => $response->success
+            ));*/
             
         }
-        
+ 
 
-        private function sendNotification( $apiKey, $registrationIdsArray, $messageData )
+        private function sendAndroidNotification( $apiKey, $registrationIdsArray, $messageData )
         {   
 
             $headers = array("Content-Type:" . "application/json", "Authorization:" . "key=" . $apiKey);
@@ -223,5 +231,63 @@ class Article extends CActiveRecord
 
             return $response;
         }
+        
+        
+        private function setupAppleNotification( $devices ){
+                
+                $development = true;//change it to true if in development
+                $passphrase='mountmercy543';//pass phrase of the pem file
+                
+                $device_tokens = $this->getRegIdsArray($devices);
+
+                $payload = array();
+                //$payload['aps'] = array('alert' => $msg_text, 'badge' => intval($badge), 'sound' => $sound);
+                
+                
+                $payload['aps'] = array('alert' => $this->title, 
+                                         'badge' => 1, 'sound' => 'default',
+                                         'article_id'=> $this->id,	
+                                            );
+                
+                
+                $payload = json_encode($payload);
+
+                $apns_url = NULL;
+                $apns_cert = NULL;
+                $apns_port = 2195;
+
+                if($development)
+                {
+                    $apns_url = 'gateway.sandbox.push.apple.com';
+                    $apns_cert = dirname(Yii::app()->request->scriptFile).'/pems/mountmercy/MountMercy-dev.pem';
+                }
+                else
+                {
+                    $apns_url = 'gateway.push.apple.com';
+                    $apns_cert = dirname(Yii::app()->request->scriptFile).'/pems/mountmercy/MountMercy-dev.pem';
+                }
+                $stream_context = stream_context_create();
+                stream_context_set_option($stream_context, 'ssl', 'local_cert', $apns_cert);
+                stream_context_set_option($stream_context, 'ssl', 'passphrase', $passphrase);
+
+                $apns = stream_socket_client('ssl://' . $apns_url . ':' . $apns_port, $error, $error_string, 2, STREAM_CLIENT_CONNECT, $stream_context);            
+                //$device_tokens= "b2333b31cfd8d81c58b1453dee9306429c3a3a90e36a361ec60a8a700e4ed433";
+
+                foreach ($device_tokens as $key => $token) {          
+                    $apns_message = chr(0) . chr(0) . chr(32) . pack('H*', $token ) . chr(0) . chr(strlen($payload)) . $payload;
+                    fwrite($apns, $apns_message);                 
+                }
+
+                @socket_close($apns);
+                @fclose($apns);
+   
+                if ($errorString){
+                    //input error in tbl_article under apple_response
+                }
+                    //throw new Exception('Can\'t connect to Apple Push Notification Service: '.$errorString);
+                
+        }
+        
+     
  
 }

@@ -115,24 +115,24 @@ return array(
 		),*/
 		
                 //LOCAL DETAILS
-		/*'db'=>array(
+		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=schoolspace_push',
 			'emulatePrepare' => true,
 			'username' => 'root',
 			'password' => 'password',
 			'charset' => 'utf8',
                         'tablePrefix' => 'tbl_',
-		),*/
+		),
             
                 //Schoolspace details
-		'db'=>array(
+		/*'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=schoolpush_main',
 			'emulatePrepare' => true,
 			'username' => 'schoolpush',
 			'password' => 'h7djksotp9',
 			'charset' => 'utf8',
                         'tablePrefix' => 'tbl_',
-		),
+		),*/
 		
 		'errorHandler'=>array(
 			// use 'site/error' action to display errors
