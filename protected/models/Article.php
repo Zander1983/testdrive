@@ -32,13 +32,15 @@ class Article extends CActiveRecord
          }
          
          
+         /*
         protected function afterFind()
         {
+            $test = $this->scenario;
             
             $this->time_created = date('Y-m-d H:i:s', $this->time_created);
             
             parent::afterFind();
-        }
+        }*/
     
 
 	/**
@@ -55,6 +57,7 @@ class Article extends CActiveRecord
                         array('apple_response', 'length', 'max'=>200),
                         array('android_response', 'length', 'max'=>200),
                         array('title', 'length', 'max'=>80),
+                       // array('time_created', 'checkIfHoursPassed'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('content, title', 'safe', 'on'=>'search'),
@@ -129,8 +132,15 @@ class Article extends CActiveRecord
 
         protected function beforeSave()
         {
-            $test = 10;
-            
+            //get the last time article created. if more than an hour -> send        
+            /*$lastArticle = Article::model()->find(array('order' => 'time_created DESC', 'limit' => '1'));
+          
+            if($lastArticle){
+                if(!$this->checkIfHoursPassed($lastArticle->time_created)){
+                    return false;
+                }
+            }*/
+      
             if(parent::beforeSave())
             {
                 $this->time_created=time();
@@ -142,14 +152,26 @@ class Article extends CActiveRecord
                 return false;
         }
         
+        public function checkIfHoursPassed($attribute){
+            
+            $lastArticle = Article::model()->find(array('order' => 'time_created DESC', 'limit' => '1'));
+          
+            if($lastArticle){
+                
+                $test = time()-$lastArticle->$attribute;
+
+                if((time()-$lastArticle->$attribute)<3600){
+                    $this->addError($attribute, 'You must wait at least 1 hour before sending a new message');
+                }                
+            }
+        }
+        
         /*
          * This is where we will make the curl call
          */
         
         protected function afterSave()
         {
-            
-            mail('info@webintelligence.ie', 'in afterSave', 'bosy');
             
             $user = User::model()->findByPk(Yii::app()->user->id);
             
@@ -163,14 +185,15 @@ class Article extends CActiveRecord
             $this->setupAndroidNotification($devices, $project);
              
             
-            mail('info@webintelligence.ie', 'gettiing ios devices', 'bosy');
             //get apple devices
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+        /*    $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
                                                         AND (platform = 'ios' Or platform = 'iOS')
                                                         "));
             $this->setupAppleNotification($devices);
-           
+           */
         }
+        
+      
         
         private function getRegIdsArray($devices){
             
@@ -196,13 +219,48 @@ class Article extends CActiveRecord
 
             $response = json_decode($response);
 
-            //record android response here
-
-            /*
+            $this->recordAndroidResponse($response);
+            
+        }
+        
+        private function recordAndroidResponse($response){
+            
+            if($response->failure=="0"){
+                $string = "Successully sent. Response: ";
+            }
+            else{
+                $string = "Problem Sending to all devices. Response: ";
+            }
+            
+            $string .= "Success is {$response->success}, Failure is {$response->failure}";
+            
+            if(is_array($response->results)){
+                $string .= " and message id is ".$response->results[0]->message_id;
+            }
+                
             $this->updateByPk($this->id, array(
-                'pushed' => $pushed,
-                'android_response' => $response->success
-            ));*/
+            'android_response' => $string
+            ));
+            
+        }
+        
+        
+        private function recordAppleResponse($error, $error_string){
+            
+           
+            if($error!="0"){
+                $string = "Error is $error and errorString is $error_string";
+            }
+            else{
+                $string = "Successfully sent";                
+            }
+            
+            mail('info@webintelligence.ie', 'apple string is ', $string);
+            
+              
+            $this->updateByPk($this->id, array(
+            'apple_response' => $string
+            ));
             
         }
  
@@ -281,10 +339,7 @@ class Article extends CActiveRecord
                 @socket_close($apns);
                 @fclose($apns);
    
-                if ($errorString){
-                    //input error in tbl_article under apple_response
-                }
-                    //throw new Exception('Can\'t connect to Apple Push Notification Service: '.$errorString);
+                $this->recordAppleResponse($error, $error_string);
                 
         }
         

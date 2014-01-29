@@ -14,7 +14,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Articles</h1>
+<h1>Messages</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

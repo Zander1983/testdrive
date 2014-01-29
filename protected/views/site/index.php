@@ -22,7 +22,7 @@ and see how many mobile devices will receive your notifications. </p>
     }
     else{
 ?>
-    <p>Click "Push New Article" in the right sidebar to review articles you have pushed, push a new article, 
+    <p>Click "Send New Message" in the right sidebar to review messages you have pushed, send a new message, 
 and see how many mobile devices will receive your notifications. </p>
     
 <?php

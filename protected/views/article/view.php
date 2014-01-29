@@ -17,7 +17,7 @@ $this->menu=array(
 );*/
 ?>
 
-<h1>View Article #<?php echo $model->id; ?></h1>
+<h1>View Message #<?php echo $model->id; ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
@@ -26,8 +26,8 @@ $this->menu=array(
 		'user_id',
 		'title',
 		'content',
-		'pushed',
-		'number_pushed_to',
+		'apple_response',
+		'android_response',
 		'time_created',
 	),
 )); ?>

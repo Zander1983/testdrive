@@ -1,8 +1,8 @@
 
 <ul>
-    <li><?php echo CHtml::link('Push New Article',Yii::app()->createAbsoluteUrl('article/create')); ?></li>
+    <li><?php echo CHtml::link('Send New Message',Yii::app()->createAbsoluteUrl('article/create')); ?></li>
     
-    <li><?php  echo CHtml::link('Your Articles Pushed', Yii::app()->createAbsoluteUrl('articles')); ?></li>
+    <li><?php  echo CHtml::link('Sent Messages', Yii::app()->createAbsoluteUrl('articles')); ?></li>
     
     <li><?php  echo CHtml::link('Devices', Yii::app()->createAbsoluteUrl('devices')); ?></li>
    

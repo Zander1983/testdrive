@@ -21,16 +21,16 @@
 	<?php echo CHtml::encode($data->content); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('pushed')); ?>:</b>
-	<?php echo CHtml::encode($data->pushed); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('android_response')); ?>:</b>
+	<?php echo CHtml::encode($data->android_response); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('number_pushed_to')); ?>:</b>
-	<?php echo CHtml::encode($data->number_pushed_to); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('apple_response')); ?>:</b>
+	<?php echo CHtml::encode($data->apple_response); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('time_created')); ?>:</b>
-	<?php echo CHtml::encode($data->time_created); ?>
+	<?php echo CHtml::encode(date('Y-m-d H:i:s', $data->time_created)); ?>
 	<br />
 
 

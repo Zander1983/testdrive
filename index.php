@@ -3,8 +3,6 @@
 // change the following paths if necessary
 $yii=dirname(__FILE__).'/../yii/framework/yii.php';
 
-echo "yii is ".$yii;
-
 $config=dirname(__FILE__).'/protected/config/main.php';
 
 // remove the following lines when in production mode
