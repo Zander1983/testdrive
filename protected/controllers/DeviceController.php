@@ -15,14 +15,17 @@ class DeviceController extends Controller
                 
                 $criteria=new CDbCriteria(array(
                     'condition'=>"project_title = '{$user->username}'",
+                    'group' => 'reg_id'
                 ));
                    
                 $total = Device::model()->count(array(
                     'condition'=>"project_title = '{$user->username}'",
+                    'group' => 'reg_id'
                 ));
                     
                 $notifcation_on = Device::model()->count(array(
                     'condition'=>"project_title = '{$user->username}' AND notification = 1",
+                    'group' => 'reg_id'
                 ));
   
                 $dataProvider=new CActiveDataProvider('Device', array(
@@ -34,16 +37,27 @@ class DeviceController extends Controller
             }
             else{
                 //So is the super user, show all articles
-                $total = Device::model()->count();
+                
+                $total_records = Device::model()->count();
+                
+                $total = Device::model()->count(array(
+                    'group' => 'reg_id'
+                ));
                 
                 $notifcation_on = Device::model()->count(array(
                     'condition'=>"notification = 1",
+                    'group' => 'reg_id'
+                ));
+                
+                $criteria=new CDbCriteria(array(
+                    'group' => 'reg_id'
                 ));
                 
                 $dataProvider=new CActiveDataProvider('Device', array(
                     'pagination'=>array(
                         'pageSize'=>5,
-                    )
+                    ), 
+                    'criteria'=>$criteria,
                 ));   
             }
            
@@ -52,7 +66,8 @@ class DeviceController extends Controller
             $this->render('index',array(
                     'dataProvider'=>$dataProvider,
                     'total' => $total,
-                    'notifcation_on' => $notifcation_on
+                    'notifcation_on' => $notifcation_on,
+                    'total_records' => $total_records
             ));
 	}
 

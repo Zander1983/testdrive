@@ -180,17 +180,19 @@ class Article extends CActiveRecord
             
             //get android devices
             $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
-                                                        AND (platform = 'android' Or platform = 'Android')
-                                                        "));
+                                                        AND (platform = 'android' Or platform = 'Android')", 
+                                                        'group' => 'reg_id'
+                                                        ));
             $this->setupAndroidNotification($devices, $project);
              
             
             //get apple devices
-        /*    $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
-                                                        AND (platform = 'ios' Or platform = 'iOS')
-                                                        "));
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+                                                        AND (platform = 'ios' Or platform = 'iOS')", 
+                                                        'group' => 'reg_id'
+                                                        ));
             $this->setupAppleNotification($devices);
-           */
+           
         }
         
       

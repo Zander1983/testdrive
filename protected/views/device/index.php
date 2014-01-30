@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 <?php 
 
     if(Yii::app()->user->isAdmin()){
+        echo "<h3>Total number of records in tbl_device: $total_records </h3>";
         echo "<h3>Total number of users of Schoolspace apps: $total </h3>";
         echo "<h3>Total number of devices in all projects with notification turned on: $notifcation_on </h3>";
     }

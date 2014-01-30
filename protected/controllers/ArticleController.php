@@ -129,7 +129,12 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
+            
            
+            foreach ($devices as $device){
+                echo "device platform is ".$device->platform." and reg id is ".$device->reg_id."<br /><br />";
+            }
+            
                    
             if(!Yii::app()->user->isAdmin()){
                 
