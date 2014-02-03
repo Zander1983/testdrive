@@ -1,6 +1,13 @@
 <div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php 
+
+echo "is new record is ".$model->isNewRecord;
+
+echo " model username is ".$model->username;
+
+
+    $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'user-form',
 	'enableAjaxValidation'=>true,
 	'htmlOptions' => array('enctype'=>'multipart/form-data'),
@@ -13,25 +20,14 @@
 
 	<div class="row">
 		<?php 
-                
-                
+       
                 echo $form->labelEx($model,'username'); 
-		//echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); 
-         
-                echo $form->dropDownList($model,'username', 
-                                                    CHtml::listData(Project::model()->findAll(
-                                                        array("condition"=>"project_title Not In (Select username from {{users}})")), 
-                                                        'project_title', 'project_title'), array('empty'=>'Select Project'));
-		echo $form->error($model,'username'); 
-                
-                /*
-		echo $form->labelEx($model,'username'); 
 		echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); 
-		echo $form->error($model,'username');*/
-                
+                echo $form->error($model,'username'); 
+     
                 ?>
 	</div>
-
+ 
 	<div class="row">
 		<?php echo $form->labelEx($model,'password'); ?>
 		<?php echo $form->passwordField($model,'password',array('size'=>60,'maxlength'=>128)); ?>
@@ -42,6 +38,34 @@
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
 		<?php echo $form->error($model,'email'); ?>
+	</div>
+        
+	<div class="row">
+		<?php echo $form->labelEx($model,'project_id'); ?>
+		<?php                 
+                    if($model->isNewRecord){
+                        echo $form->dropDownList($model,
+                                                 'project_id', 
+                                                  CHtml::listData(Project::model()->findAll(
+                                                            array("condition"=>"id Not In (Select project_id from {{users}})")), 
+                                                            'id', 'project_title'), 
+                                                  array('empty'=>'Select Project')
+                                        );
+                    }
+                    else{
+
+                        echo $form->dropDownList($model,
+                                                 'project_id', 
+                                                  CHtml::listData(Project::model()->findAll(
+                                                            array("condition"=>"id Not In (Select project_id from {{users}}) or id = {$model->project_id}")), 
+                                                            'id', 'project_title'), 
+                                                  array('empty'=>'Select Project', 
+                                                        'options' => array($model->project_id=>array('selected'=>true))
+                                                      )
+                                        );
+                    } 
+                ?>
+		<?php echo $form->error($model,'project_id'); ?>
 	</div>
 
 	<div class="row">

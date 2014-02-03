@@ -56,6 +56,11 @@ $('.search-form form').submit(function(){
 			'type'=>'raw',
 			'value'=>'CHtml::link(UHtml::markSearch($data,"email"), "mailto:".$data->email)',
 		),
+		array(
+			'name'=>'password',
+			'type'=>'raw',
+			'value'=>'CHtml::link("change password",array("profile/changepassword","id"=>$data->id))',
+		),
 		'create_at',
 		'lastvisit_at',
 		array(

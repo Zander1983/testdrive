@@ -34,10 +34,14 @@ $this->menu=array(
 				));
 		}
 	}
-	
+        
 	array_push($attributes,
 		'password',
 		'email',
+		array(
+			'name' => 'project_id',
+			'value' => Project::model()->findByPK($model->project_id)->project_title,
+		),
 		'activkey',
 		'create_at',
 		'lastvisit_at',

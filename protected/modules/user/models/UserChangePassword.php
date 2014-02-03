@@ -10,6 +10,7 @@ class UserChangePassword extends CFormModel {
 	public $verifyPassword;
 	
 	public function rules() {
+                
 		return Yii::app()->controller->id == 'recovery' ? array(
 			array('password, verifyPassword', 'required'),
 			array('password, verifyPassword', 'length', 'max'=>128, 'min' => 4,'message' => UserModule::t("Incorrect password (minimal length 4 symbols).")),
@@ -39,7 +40,13 @@ class UserChangePassword extends CFormModel {
 	 */
 	 public function verifyOldPassword($attribute, $params)
 	 {
-		 if (User::model()->notsafe()->findByPk(Yii::app()->user->id)->password != Yii::app()->getModule('user')->encrypting($this->$attribute))
+                 $user_id = Yii::app()->request->getQuery('id');
+                 
+                if(!$user_id){
+                    $user_id = ii::app()->user->id;
+                }
+                 
+		 if (User::model()->notsafe()->findByPk($user_id)->password != Yii::app()->getModule('user')->encrypting($this->$attribute))
 			 $this->addError($attribute, UserModule::t("Old Password is incorrect."));
 	 }
 }

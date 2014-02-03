@@ -11,31 +11,8 @@ class DeviceController extends Controller
             
             $user = User::model()->findByPk(Yii::app()->user->id);
                    
-            if(!Yii::app()->user->isAdmin()){
-                
-                $criteria=new CDbCriteria(array(
-                    'condition'=>"project_title = '{$user->username}'",
-                    'group' => 'reg_id'
-                ));
-                   
-                $total = Device::model()->count(array(
-                    'condition'=>"project_title = '{$user->username}'",
-                    'group' => 'reg_id'
-                ));
-                    
-                $notifcation_on = Device::model()->count(array(
-                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
-                    'group' => 'reg_id'
-                ));
-  
-                $dataProvider=new CActiveDataProvider('Device', array(
-                    'pagination'=>array(
-                        'pageSize'=>5,
-                    ),
-                    'criteria'=>$criteria,
-                ));           
-            }
-            else{
+            if(Yii::app()->user->isAdmin()){
+
                 //So is the super user, show all articles
                 
                 $total_records = Device::model()->count();
@@ -59,16 +36,49 @@ class DeviceController extends Controller
                     ), 
                     'criteria'=>$criteria,
                 ));   
+                
+                $this->render('index',array(
+                        'dataProvider'=>$dataProvider,
+                        'total' => $total,
+                        'notifcation_on' => $notifcation_on,
+                        'total_records' => $total_records
+                ));
+       
+            }
+            else{
+                
+                $criteria=new CDbCriteria(array(
+                    'condition'=>"project_title = '{$user->username}'",
+                    'group' => 'reg_id'
+                ));
+                   
+                $total = Device::model()->count(array(
+                    'condition'=>"project_title = '{$user->username}'",
+                    'group' => 'reg_id'
+                ));
+                    
+                $notifcation_on = Device::model()->count(array(
+                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
+                    'group' => 'reg_id'
+                ));
+  
+                $dataProvider=new CActiveDataProvider('Device', array(
+                    'pagination'=>array(
+                        'pageSize'=>5,
+                    ),
+                    'criteria'=>$criteria,
+                ));    
+                
+                $this->render('index',array(
+                        'dataProvider'=>$dataProvider,
+                        'total' => $total,
+                        'notifcation_on' => $notifcation_on
+                ));
             }
            
             
             //$dataProvider=new CActiveDataProvider('Device');
-            $this->render('index',array(
-                    'dataProvider'=>$dataProvider,
-                    'total' => $total,
-                    'notifcation_on' => $notifcation_on,
-                    'total_records' => $total_records
-            ));
+
 	}
 
 	// Uncomment the following methods and override them if needed

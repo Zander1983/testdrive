@@ -14,6 +14,7 @@ class User extends CActiveRecord
 	 * @var integer $id
 	 * @var string $username
 	 * @var string $password
+         * @var string $project_id
 	 * @var string $email
 	 * @var string $activkey
 	 * @var integer $createtime
@@ -59,11 +60,11 @@ class User extends CActiveRecord
 			array('superuser', 'in', 'range'=>array(0,1)),
             array('create_at', 'default', 'value' => date('Y-m-d H:i:s'), 'setOnEmpty' => true, 'on' => 'insert'),
             array('lastvisit_at', 'default', 'value' => '0000-00-00 00:00:00', 'setOnEmpty' => true, 'on' => 'insert'),
-			array('username, email, superuser, status', 'required'),
-			array('superuser, status', 'numerical', 'integerOnly'=>true),
+			array('username, email, superuser, status, project_id', 'required'),
+			array('superuser, status, project_id', 'numerical', 'integerOnly'=>true),
 			array('id, username, password, email, activkey, create_at, lastvisit_at, superuser, status', 'safe', 'on'=>'search'),
 		):((Yii::app()->user->id==$this->id)?array(
-			array('username, email', 'required'),
+			array('username, email, project_id', 'required'),
 			array('username', 'length', 'max'=>20, 'min' => 3,'message' => UserModule::t("Incorrect username (length between 3 and 20 characters).")),
 			array('email', 'email'),
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
@@ -92,6 +93,7 @@ class User extends CActiveRecord
 			'id' => UserModule::t("Id"),
 			'username'=>UserModule::t("Username"),
 			'password'=>UserModule::t("Password"),
+                        'project_id'=>UserModule::t("Project"),
 			'verifyPassword'=>UserModule::t("Retype Password"),
 			'email'=>UserModule::t("E-mail"),
 			'verifyCode'=>UserModule::t("Verification Code"),
@@ -130,7 +132,7 @@ class User extends CActiveRecord
     {
         return CMap::mergeArray(Yii::app()->getModule('user')->defaultScope,array(
             'alias'=>'user',
-            'select' => 'user.id, user.username, user.email, user.create_at, user.lastvisit_at, user.superuser, user.status',
+            'select' => 'user.id, user.username, user.email, user.project_id, user.create_at, user.lastvisit_at, user.superuser, user.status',
         ));
     }
 	
@@ -203,4 +205,17 @@ class User extends CActiveRecord
         }
         return parent::afterSave();
     }
+    
+    /*
+    protected function afterFind()
+    {
+        $test = $this->project_id;
+        
+        $test2 = $this->username;
+        
+      $this->project_id = Project::model()->findByPK($this->project_id); //return customized attribute_a
+      
+      parent::afterFind(); //To raise the event
+    }*/
+    
 }

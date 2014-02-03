@@ -6,7 +6,9 @@
 
 <div class="form">
 
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php 
+
+    $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'article-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
@@ -34,7 +36,20 @@
 
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+		<?php 
+                
+                $alert = "Are you sure you want to send this Push Notification? $notifcation_on devices will be sent this message!";
+                
+                echo CHtml::submitButton('Send Message', 
+                                        array('confirm' => $alert)); 
+              
+                /*
+                CHtml::link(
+                    'Delete',
+                     array('confirm' => 'Are you sure you want to send this Push Notification?')
+                );*/
+                
+                ?>
 	</div>
 
 <?php $this->endWidget(); ?>

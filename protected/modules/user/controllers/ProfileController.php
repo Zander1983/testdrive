@@ -3,7 +3,6 @@
 class ProfileController extends Controller
 {
 	public $defaultAction = 'profile';
-	public $layout='//layouts/column2';
 
 	/**
 	 * @var CActiveRecord the currently loaded data model instance.
@@ -61,8 +60,15 @@ class ProfileController extends Controller
 	 * Change password
 	 */
 	public function actionChangepassword() {
+            
+                $user_id = Yii::app()->request->getQuery('id');
+                
+                if(!$user_id){
+                    $user_id = ii::app()->user->id;
+                }
+            
 		$model = new UserChangePassword;
-		if (Yii::app()->user->id) {
+		if ($user_id) {
 			
 			// ajax validator
 			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
@@ -74,7 +80,7 @@ class ProfileController extends Controller
 			if(isset($_POST['UserChangePassword'])) {
 					$model->attributes=$_POST['UserChangePassword'];
 					if($model->validate()) {
-						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						$new_password = User::model()->notsafe()->findbyPk($user_id);
 						$new_password->password = UserModule::encrypting($model->password);
 						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						$new_password->save();

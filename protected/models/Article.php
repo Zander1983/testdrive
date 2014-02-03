@@ -57,7 +57,7 @@ class Article extends CActiveRecord
                         array('apple_response', 'length', 'max'=>200),
                         array('android_response', 'length', 'max'=>200),
                         array('title', 'length', 'max'=>80),
-                       // array('time_created', 'checkIfHoursPassed'),
+                        array('time_created', 'checkIfHoursPassed'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('content, title', 'safe', 'on'=>'search'),
@@ -176,18 +176,21 @@ class Article extends CActiveRecord
             $user = User::model()->findByPk(Yii::app()->user->id);
             
             //'project_title' => $user->username
-            $project = Project::model()->find(array('condition' => "project_title = '{$user->username}'"));
+            $project = Project::model()->findByPk($user->project_id);
+            
             
             //get android devices
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
                                                         AND (platform = 'android' Or platform = 'Android')", 
                                                         'group' => 'reg_id'
                                                         ));
+            
             $this->setupAndroidNotification($devices, $project);
              
             
             //get apple devices
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$user->username}'
+            
+            $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
                                                         AND (platform = 'ios' Or platform = 'iOS')", 
                                                         'group' => 'reg_id'
                                                         ));

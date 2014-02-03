@@ -45,8 +45,8 @@ class ArticleController extends Controller
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
-                                //'actions'=>array('delete'),
-				'users'=>array('*'),
+                                'actions'=>array('create', 'update'),
+				'users'=>array('admin'),
 			),
 		);
 	}
@@ -68,10 +68,20 @@ class ArticleController extends Controller
 	 */
 	public function actionCreate()
 	{
+    
+            if(!Yii::app()->user->isAdmin()){
 		$model=new Article;
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		$this->performAjaxValidation($model);
+                
+                $user = User::model()->findByPk(Yii::app()->user->id);
+                
+                //get number of devices with notification turned on 
+                $notifcation_on = Device::model()->count(array(
+                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
+                    'group' => 'reg_id'
+                ));
 
 		if(isset($_POST['Article']))
 		{
@@ -83,7 +93,13 @@ class ArticleController extends Controller
 
 		$this->render('create',array(
 			'model'=>$model,
+                        'notifcation_on' => $notifcation_on
 		));
+            }
+            else{
+                //so is admin, redirect to home
+                $this->redirect('index');
+            }
 	}
 
 	/**
@@ -129,14 +145,23 @@ class ArticleController extends Controller
 	 */
 	public function actionIndex()
 	{
-            
-           
-            foreach ($devices as $device){
-                echo "device platform is ".$device->platform." and reg id is ".$device->reg_id."<br /><br />";
-            }
-            
+          
                    
-            if(!Yii::app()->user->isAdmin()){
+            if(Yii::app()->user->isAdmin()){
+                
+                //So is the super user, show all articles
+                $criteria=new CDbCriteria(array(
+                    'order'=>'time_created DESC',
+                ));
+                
+                $dataProvider=new CActiveDataProvider('Article', array(
+                    'pagination'=>array(
+                        'pageSize'=>5,
+                    ),
+                    'criteria'=>$criteria,
+                ));   
+            }
+            else{
                 
                 $criteria=new CDbCriteria(array(
                     'condition'=>'user_id='.Yii::app()->user->id,
@@ -149,20 +174,8 @@ class ArticleController extends Controller
                         'pageSize'=>5,
                     ),
                     'criteria'=>$criteria,
-                ));           
-            }
-            else{
-                //So is the super user, show all articles
-                $criteria=new CDbCriteria(array(
-                    'order'=>'time_created DESC',
-                ));
-                
-                $dataProvider=new CActiveDataProvider('Article', array(
-                    'pagination'=>array(
-                        'pageSize'=>5,
-                    ),
-                    'criteria'=>$criteria,
-                ));   
+                )); 
+
             }
                 
 
