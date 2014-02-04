@@ -12,13 +12,12 @@
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</b>
-	<?php 
-            $user = User::model()->findByPk(Yii::app()->user->id);
-            if($user->isAdmin()){
-                echo CHtml::encode($data->user_id);                
+	<?php
+            if($data->user_id==1){
+                echo CHtml::encode($data->user_id)."(admin)";
             }
             else{
-                
+                echo CHtml::encode($data->user_id);                
             }
         ?>
 	<br />

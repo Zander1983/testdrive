@@ -287,7 +287,7 @@ class Article extends CActiveRecord
 
                 mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
                 
-                /*
+                
                 if(count($devices)>0){
                     $returns = $this->setupAppleNotification($devices);
                     $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
@@ -295,7 +295,7 @@ class Article extends CActiveRecord
                 }
                 else{
                     $this->recordAppleResponse('no apple devices found');
-                }*/
+                }
 
             }
         }

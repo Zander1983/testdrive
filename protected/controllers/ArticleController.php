@@ -146,18 +146,11 @@ class ArticleController extends Controller
 		if(isset($_POST['Article']))
 		{
                     
-                    file_put_contents('/var/www/my_logs/article.log', var_export($_POST, true));
-                    
 			$model->attributes=$_POST['Article'];
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
-               
-                //get number of devices with notification turned on 
-                $notifcation_on = Device::model()->count(array(
-                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
-                    'group' => 'reg_id'
-                ));
+            
 
 		$this->render('admincreate',array(
 			'model'=>$model,

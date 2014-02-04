@@ -8,8 +8,6 @@
 
 <?php 
 
-echo "base url is ";
-echo Yii::app()->baseUrl; 
 
     $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'article-form',
@@ -60,8 +58,8 @@ echo Yii::app()->baseUrl;
 	<div class="row buttons">
 		<?php 
                 
-                $alert = "Are you sure you want to send this Push Notification? $notifcation_on devices will be sent this message!";
-                
+               $alert = "Are you sure you want to send this Push Notification? Devices marked for testing will be sent this message!";
+            
                 echo CHtml::submitButton('Send Message', 
                                         array('confirm' => $alert)); 
               

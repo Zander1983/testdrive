@@ -19,6 +19,7 @@ $this->menu=array(
 
 <h1>View Message #<?php echo $model->id; ?></h1>
 
+
 <?php $this->renderPartial('_view', array(
 	'data'=>$model,
 )); ?>

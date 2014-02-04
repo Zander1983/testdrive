@@ -16,4 +16,4 @@ $this->menu=array(
 
 <h1>Send Message</h1>
 
-<?php $this->renderPartial('_admincreateform', array('model'=>$model, 'notifcation_on' => $notifcation_on)); ?>
+<?php $this->renderPartial('_admincreateform', array('model'=>$model)); ?>
