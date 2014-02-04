@@ -19,15 +19,6 @@ $this->menu=array(
 
 <h1>View Message #<?php echo $model->id; ?></h1>
 
-<?php $this->widget('zii.widgets.CDetailView', array(
+<?php $this->renderPartial('_view', array(
 	'data'=>$model,
-	'attributes'=>array(
-		'id',
-		'user_id',
-		'title',
-		'content',
-		'apple_response',
-		'android_response',
-		'time_created',
-	),
 )); ?>

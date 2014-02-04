@@ -8,12 +8,16 @@
  * @property integer $user_id
  * @property string $content
  * @property string $title
+ * @property string $project_id
  * @property string $apple_response
  * @property integer $android_response
  * @property string $time_created
  */
 class Article extends CActiveRecord
 {
+    
+        private $project;
+    
 	/**
 	 * @return string the associated database table name
 	 */
@@ -50,6 +54,20 @@ class Article extends CActiveRecord
 	{
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
+            if(Yii::app()->user->isAdmin()){
+		return array(
+			array('content, title, project_id', 'required'),
+			array('user_id, project_id', 'numerical', 'integerOnly'=>true),
+			array('content', 'length', 'max'=>2000),
+                        array('apple_response', 'length', 'max'=>200),
+                        array('android_response', 'length', 'max'=>200),
+                        array('title', 'length', 'max'=>80),
+			// The following rule is used by search().
+			// @todo Please remove those attributes that should not be searched.
+			array('content, title', 'safe', 'on'=>'search'),
+		);                
+            }
+            else{
 		return array(
 			array('content, title', 'required'),
 			array('user_id', 'numerical', 'integerOnly'=>true),
@@ -62,6 +80,7 @@ class Article extends CActiveRecord
 			// @todo Please remove those attributes that should not be searched.
 			array('content, title', 'safe', 'on'=>'search'),
 		);
+            }
 	}
 
 	/**
@@ -89,6 +108,7 @@ class Article extends CActiveRecord
 			'apple_response' => 'Apple Response',
 			'android_response' => 'Android Response',
 			'time_created' => 'Time Created',
+                        'project_id' => 'Project',
 		);
 	}
 
@@ -130,27 +150,7 @@ class Article extends CActiveRecord
 	}
         
 
-        protected function beforeSave()
-        {
-            //get the last time article created. if more than an hour -> send        
-            /*$lastArticle = Article::model()->find(array('order' => 'time_created DESC', 'limit' => '1'));
-          
-            if($lastArticle){
-                if(!$this->checkIfHoursPassed($lastArticle->time_created)){
-                    return false;
-                }
-            }*/
-      
-            if(parent::beforeSave())
-            {
-                $this->time_created=time();
-                $this->user_id=Yii::app()->user->id;
-   
-                return true;
-            }
-            else
-                return false;
-        }
+
         
         public function checkIfHoursPassed($attribute){
             
@@ -166,31 +166,43 @@ class Article extends CActiveRecord
             }
         }
         
+  
+        
+        protected function beforeSave()
+        {
+      
+            if(parent::beforeSave())
+            {
+                $this->time_created=time();
+                $this->user_id=Yii::app()->user->id;
+                
+                if(!Yii::app()->user->isAdmin()){
+                    $user = User::model()->findByPk(Yii::app()->user->id);
+                    $this->project_id = $user->project_id;
+                }
+                
+   
+                return true;
+            }
+            else
+                return false;
+        }
+        
+        
         /*
          * This is where we will make the curl call
          */
         
         protected function afterSave()
         {
-
+            
             if(Yii::app()->user->isAdmin()){
                 
                 //so only send to test devices
-                
-                $project_id = $_POST['project_id'];
-                
-                if(!$project_id){
-                    //show error and return
-                    return;
-                }
-                
-                //'project_title' => $user->username
-                $project = Project::model()->findByPk($project_id);
-
-                $project_title = $project->project_title;
+                $this->project = Project::model()->findByPk($this->project_id);
 
                 //get android devices
-                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$this->project->project_title}'
                                                             AND (platform = 'android' Or platform = 'Android')
                                                             AND notification = 1
                                                             AND test_device = 1
@@ -202,11 +214,10 @@ class Article extends CActiveRecord
 
                 mail('info@webintelligence.ie', 'admin test: device count for android is '.count($devices), 'body');
 
-                $test = count($devices);
                 
                 if(count($devices)>0){
                     
-                    $response = $this->setupAndroidNotification($devices, $project);       
+                    $response = $this->setupAndroidNotification($devices);       
                     $android_response = $this->parseAndroidResponse($response);
                     $this->recordAndroidResponse($android_response);
                     
@@ -217,7 +228,7 @@ class Article extends CActiveRecord
                 
                 //get apple devices
 
-                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$this->project->project_title}'
                                                             AND (platform = 'ios' Or platform = 'iOS')
                                                             AND notification = 1
                                                             AND test_device = 1
@@ -227,6 +238,7 @@ class Article extends CActiveRecord
 
                 mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
 
+                /*
                 if(count($devices)>0){
                     $returns = $this->setupAppleNotification($devices);
                     $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
@@ -234,21 +246,15 @@ class Article extends CActiveRecord
                 }
                 else{
                     $this->recordAppleResponse('no apple devices found');
-                }
-                
-                $this->recordTestProject($project_title);
-
+                }*/
+            
             }
             else{
+  
+                $this->project = Project::model()->findByPk($this->project_id);
                 
-                $user = User::model()->findByPk(Yii::app()->user->id);
-
-                //'project_title' => $user->username
-                $project = Project::model()->findByPk($user->project_id);
-
-
                 //get android devices
-                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$this->project->project_title}'
                                                             AND (platform = 'android' Or platform = 'Android')
                                                             AND notification = 1
                                                             ", 
@@ -261,7 +267,7 @@ class Article extends CActiveRecord
 
                 if(count($devices)>0){
                     
-                    $response = $this->setupAndroidNotification($devices, $project);       
+                    $response = $this->setupAndroidNotification($devices);       
                     $android_response = $this->parseAndroidResponse($response);
                     $this->recordAndroidResponse($android_response);
                     
@@ -272,7 +278,7 @@ class Article extends CActiveRecord
 
 
                 //get apple devices
-                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$this->project->project_title}'
                                                             AND (platform = 'ios' Or platform = 'iOS')
                                                             AND notification = 1
                                                             ", 
@@ -281,6 +287,7 @@ class Article extends CActiveRecord
 
                 mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
                 
+                /*
                 if(count($devices)>0){
                     $returns = $this->setupAppleNotification($devices);
                     $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
@@ -288,7 +295,7 @@ class Article extends CActiveRecord
                 }
                 else{
                     $this->recordAppleResponse('no apple devices found');
-                }
+                }*/
 
             }
         }
@@ -303,13 +310,13 @@ class Article extends CActiveRecord
             return $registrationId;
         }
         
-        private function setupAndroidNotification( $devices, $project )
+        private function setupAndroidNotification( $devices )
         {
 
             $registrationIds = $this->getRegIdsArray($devices);
 
             $response = $this->sendAndroidNotification( 
-                            $project->api_key, 
+                            $this->project->api_key, 
                             $registrationIds, 
                             array(
                                 'title' => $this->title,
@@ -349,16 +356,7 @@ class Article extends CActiveRecord
             ));
             
         }
-        
-        
-        private function recordTestProject($project_title){
-           
-            $this->updateByPk($this->id, array(
-            'test_project' => $project_title
-            ));
-            
-        }
-        
+    
         
         private function parseAppleResponse($error, $error_string){
 

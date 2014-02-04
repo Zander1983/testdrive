@@ -25,17 +25,21 @@ echo Yii::app()->baseUrl;
 	<?php echo $form->errorSummary($model); ?>
         
         <div class="row">
-        <?php echo $form->labelEx($model,'title'); ?>
+            
+        <?php echo $form->labelEx($model,'project_id'); ?>
         <?php
         
-            echo CHtml::dropDownList('project_id', 
-                               0,
-                              CHtml::listData(Project::model()->findAll(), 
-                                        'id', 'project_title'), 
-                              array('empty'=>'Select Project')
-                    );
+          
+            
+            echo $form->dropDownList($model,
+                                     'project_id', 
+                                      CHtml::listData(Project::model()->findAll(), 
+                                                      'id', 
+                                                      'project_title'), 
+                                      array('empty'=>'Select Project')
+                            );
         ?>
-        <?php echo $form->error($model,'title'); ?>
+        <?php echo $form->error($model,'project_id'); ?>
 
 	</div>
 
