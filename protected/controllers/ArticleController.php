@@ -101,6 +101,112 @@ class ArticleController extends Controller
                 $this->redirect('index');
             }
 	}
+        
+        
+        public function actionTestDevices()
+        {
+
+          if(Yii::app()->request->isAjaxRequest){
+                
+                $project_id = Yii::app()->request->getQuery('project_id');
+                
+                $project_title = Project::model()->findByPk($project_id)->project_title;
+                
+                
+                $devices = Device::model()->findAll(array(
+                                                          'select' => 't.id, t.platform', 
+                                                          'condition' => "project_title = '{$project_title}'
+                                                                          and test_device = 1
+                                                          ", 
+                                                          'group' => 'reg_id'
+                                                        ));
+                
+                //$devices = CHtml::listData(Device::model()->findAllByAttributes(array('project_title'=>"'{$project_title}'")), 'id', 'platform');
+                
+                echo CJavaScript::jsonEncode($devices);
+                        
+            }
+            
+        }
+        
+	public function actionAdminCreate()
+	{
+               
+          
+		$model=new Article;
+
+		// Uncomment the following line if AJAX validation is needed
+		$this->performAjaxValidation($model);
+                
+                $user = User::model()->findByPk(Yii::app()->user->id);
+                
+                //get number of devices with notification turned on 
+                $notifcation_on = Device::model()->count(array(
+                    'condition'=>"project_title = '{$user->username}' AND notification = 1",
+                    'group' => 'reg_id'
+                ));
+
+		if(isset($_POST['Article']))
+		{
+                    
+                    file_put_contents('/var/www/my_logs/article.log', var_export($_POST, true));
+                    
+			$model->attributes=$_POST['Article'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
+		}
+                
+                /*
+                $baseUrl = Yii::app()->baseUrl; 
+                
+    $js = "
+
+        $('#project_id').change(function() {
+            if ($(this).val()) {
+     
+
+                    $.ajax({
+                        url: 'testdevices',
+                        data: { 'project_id': $(this).val()},
+                        success: function(data) { 
+                            console.log('data is ');
+                            console.log(data);
+                            devices = JSON.parse(data);
+
+                            for (var index in devices) {
+
+
+                                    //console.log(devices[index].id);
+
+                                    if(devices[index].id!=='undefined'){
+                                        $('#device_list').append('<input type=checkbox name='device_ids' value='+devices[index].id+' >'+devices[index].platform+'</input><br />');
+                                    }
+                                    
+
+                            }
+
+
+                        }
+                    });
+
+            } else {
+          
+            }
+
+        });
+
+    ";
+                
+                $cs = Yii::app()->getClientScript();
+                $cs->registerScript(__CLASS__.'#dialog', $js);*/
+
+		$this->render('admincreate',array(
+			'model'=>$model,
+                        'notifcation_on' => $notifcation_on
+		));
+            
+	}
+        
 
 	/**
 	 * Updates a particular model.

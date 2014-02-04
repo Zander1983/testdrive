@@ -1,8 +1,11 @@
 
 <ul>
     <li><?php 
-        if(!Yii::app()->user->isAdmin()){
-            echo CHtml::link('Send New Message',Yii::app()->createAbsoluteUrl('article/create')); 
+        if(Yii::app()->user->isAdmin()){
+            echo CHtml::link('Send Test Message',Yii::app()->createAbsoluteUrl('article/admincreate')); 
+        }
+        else{
+            echo CHtml::link('Send New Message',Yii::app()->createAbsoluteUrl('article/create'));             
         }
     ?></li>
     

@@ -57,7 +57,7 @@ class Article extends CActiveRecord
                         array('apple_response', 'length', 'max'=>200),
                         array('android_response', 'length', 'max'=>200),
                         array('title', 'length', 'max'=>80),
-                        array('time_created', 'checkIfHoursPassed'),
+                        //array('time_created', 'checkIfHoursPassed'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('content, title', 'safe', 'on'=>'search'),
@@ -172,30 +172,125 @@ class Article extends CActiveRecord
         
         protected function afterSave()
         {
-            
-            $user = User::model()->findByPk(Yii::app()->user->id);
-            
-            //'project_title' => $user->username
-            $project = Project::model()->findByPk($user->project_id);
-            
-            
-            //get android devices
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
-                                                        AND (platform = 'android' Or platform = 'Android')", 
-                                                        'group' => 'reg_id'
-                                                        ));
-            
-            $this->setupAndroidNotification($devices, $project);
-             
-            
-            //get apple devices
-            
-            $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
-                                                        AND (platform = 'ios' Or platform = 'iOS')", 
-                                                        'group' => 'reg_id'
-                                                        ));
-            $this->setupAppleNotification($devices);
-           
+
+            if(Yii::app()->user->isAdmin()){
+                
+                //so only send to test devices
+                
+                $project_id = $_POST['project_id'];
+                
+                if(!$project_id){
+                    //show error and return
+                    return;
+                }
+                
+                //'project_title' => $user->username
+                $project = Project::model()->findByPk($project_id);
+
+                $project_title = $project->project_title;
+
+                //get android devices
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                                                            AND (platform = 'android' Or platform = 'Android')
+                                                            AND notification = 1
+                                                            AND test_device = 1
+                                                            ", 
+                                                            'group' => 'reg_id'
+                                                            ));
+
+                mail('info@webintelligence.ie', 'admin test: devices is ', var_export($devices, true));
+
+                mail('info@webintelligence.ie', 'admin test: device count for android is '.count($devices), 'body');
+
+                $test = count($devices);
+                
+                if(count($devices)>0){
+                    
+                    $response = $this->setupAndroidNotification($devices, $project);       
+                    $android_response = $this->parseAndroidResponse($response);
+                    $this->recordAndroidResponse($android_response);
+                    
+                }
+                else{
+                    $this->recordAndroidResponse('no android devices found');
+                }
+                
+                //get apple devices
+
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                                                            AND (platform = 'ios' Or platform = 'iOS')
+                                                            AND notification = 1
+                                                            AND test_device = 1
+                                                            ", 
+                                                            'group' => 'reg_id'
+                                                            ));
+
+                mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
+
+                if(count($devices)>0){
+                    $returns = $this->setupAppleNotification($devices);
+                    $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
+                    $this->recordAppleResponse($apple_response);
+                }
+                else{
+                    $this->recordAppleResponse('no apple devices found');
+                }
+                
+                $this->recordTestProject($project_title);
+
+            }
+            else{
+                
+                $user = User::model()->findByPk(Yii::app()->user->id);
+
+                //'project_title' => $user->username
+                $project = Project::model()->findByPk($user->project_id);
+
+
+                //get android devices
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                                                            AND (platform = 'android' Or platform = 'Android')
+                                                            AND notification = 1
+                                                            ", 
+                                                            'group' => 'reg_id'
+                                                            ));
+
+                mail('info@webintelligence.ie', 'devices is ', var_export($devices, true));
+
+                mail('info@webintelligence.ie', 'device count for android is '.count($devices), 'body');
+
+                if(count($devices)>0){
+                    
+                    $response = $this->setupAndroidNotification($devices, $project);       
+                    $android_response = $this->parseAndroidResponse($response);
+                    $this->recordAndroidResponse($android_response);
+                    
+                }
+                else{
+                    $this->recordAndroidResponse('no android devices found');
+                }
+
+
+                //get apple devices
+                $devices = Device::model()->findAll(array('condition' => "project_title = '{$project->project_title}'
+                                                            AND (platform = 'ios' Or platform = 'iOS')
+                                                            AND notification = 1
+                                                            ", 
+                                                            'group' => 'reg_id'
+                                                            ));
+
+                mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
+                
+                if(count($devices)>0){
+                    $returns = $this->setupAppleNotification($devices);
+                    $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
+                    $this->recordAppleResponse($apple_response);
+                }
+                else{
+                    $this->recordAppleResponse('no apple devices found');
+                }
+
+            }
         }
         
       
@@ -222,13 +317,13 @@ class Article extends CActiveRecord
                                 'article_id' => $this->id
                                     ));
 
-            $response = json_decode($response);
+            return json_decode($response);
 
-            $this->recordAndroidResponse($response);
+            
             
         }
         
-        private function recordAndroidResponse($response){
+        private function parseAndroidResponse($response){
             
             if($response->failure=="0"){
                 $string = "Successully sent. Response: ";
@@ -242,6 +337,12 @@ class Article extends CActiveRecord
             if(is_array($response->results)){
                 $string .= " and message id is ".$response->results[0]->message_id;
             }
+            
+            return $string;
+            
+        }
+        
+        private function recordAndroidResponse($string){
                 
             $this->updateByPk($this->id, array(
             'android_response' => $string
@@ -250,18 +351,28 @@ class Article extends CActiveRecord
         }
         
         
-        private function recordAppleResponse($error, $error_string){
-            
+        private function recordTestProject($project_title){
            
+            $this->updateByPk($this->id, array(
+            'test_project' => $project_title
+            ));
+            
+        }
+        
+        
+        private function parseAppleResponse($error, $error_string){
+
             if($error!="0"){
-                $string = "Error is $error and errorString is $error_string";
+                return "Error is $error and errorString is $error_string";
             }
             else{
-                $string = "Successfully sent";                
+                return "Successfully sent";                
             }
             
-            mail('info@webintelligence.ie', 'apple string is ', $string);
             
+        }
+        
+        private function recordAppleResponse($string){
               
             $this->updateByPk($this->id, array(
             'apple_response' => $string
@@ -344,8 +455,11 @@ class Article extends CActiveRecord
                 @socket_close($apns);
                 @fclose($apns);
    
-                $this->recordAppleResponse($error, $error_string);
+                $returns = array();
+                $returns['error'] = $error;
+                $returns['error_string'] = $error_string;
                 
+                return $returns;
         }
         
      
