@@ -215,6 +215,7 @@ class Article extends CActiveRecord
                 mail('info@webintelligence.ie', 'admin test: device count for android is '.count($devices), 'body');
 
                 
+                
                 if(count($devices)>0){
                     
                     $response = $this->setupAndroidNotification($devices);       
@@ -238,7 +239,7 @@ class Article extends CActiveRecord
 
                 mail('info@webintelligence.ie', 'device count for iOS is '.count($devices), 'body');
 
-                /*
+                
                 if(count($devices)>0){
                     $returns = $this->setupAppleNotification($devices);
                     $apple_response = $this->parseAppleResponse($returns['error'], $returns['error_string']);
@@ -246,7 +247,7 @@ class Article extends CActiveRecord
                 }
                 else{
                     $this->recordAppleResponse('no apple devices found');
-                }*/
+                }
             
             }
             else{
@@ -406,14 +407,17 @@ class Article extends CActiveRecord
         
         
         private function setupAppleNotification( $devices ){
+            
+                mail('info@webintelligence.ie', 'in setupAppleNotification ', 'body');
+            
+                $development = false;//change it to true if in development
+                $passphrase=$this->project->passphrase;//pass phrase of the pem file
                 
-                $development = true;//change it to true if in development
-                $passphrase='mountmercy543';//pass phrase of the pem file
+                mail('info@webintelligence.ie', 'passphrase is '.$passphrase, 'body');
                 
                 $device_tokens = $this->getRegIdsArray($devices);
 
                 $payload = array();
-                //$payload['aps'] = array('alert' => $msg_text, 'badge' => intval($badge), 'sound' => $sound);
                 
                 
                 $payload['aps'] = array('alert' => $this->title, 
@@ -431,13 +435,24 @@ class Article extends CActiveRecord
                 if($development)
                 {
                     $apns_url = 'gateway.sandbox.push.apple.com';
-                    $apns_cert = dirname(Yii::app()->request->scriptFile).'/pems/mountmercy/MountMercy-dev.pem';
+                    $apns_cert = dirname(Yii::app()->request->scriptFile)."/pems/{$this->project->project_title}/{$this->project->project_title}-dev.pem";
                 }
                 else
                 {
                     $apns_url = 'gateway.push.apple.com';
-                    $apns_cert = dirname(Yii::app()->request->scriptFile).'/pems/mountmercy/MountMercy-dev.pem';
+                    /*Because i made an error with Athlone and called the production pem project_title-dev.pem 
+                     * rather than project_title-prod.pem, need to check if its athlone and adjust accordingly
+                     */
+                    if($this->project->project_title=="athlonecc"){
+                        $apns_cert = dirname(Yii::app()->request->scriptFile)."/pems/{$this->project->project_title}/prod/{$this->project->project_title}-dev.pem";
+                    }
+                    else{
+                        $apns_cert = dirname(Yii::app()->request->scriptFile)."/pems/{$this->project->project_title}/{$this->project->project_title}-prod.pem";                
+                    }
                 }
+                
+                mail('info@webintelligence.ie', 'apns cert is ', $apns_cert);
+                
                 $stream_context = stream_context_create();
                 stream_context_set_option($stream_context, 'ssl', 'local_cert', $apns_cert);
                 stream_context_set_option($stream_context, 'ssl', 'passphrase', $passphrase);
